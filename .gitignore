@@ -40,3 +40,8 @@ og-image.jpg
 .DS_Store
 Thumbs.db
 *.log
+
+# Local deploy helpers (this machine only)
+_tls-patch.cjs
+_e2e_test.py
+deploy.sh

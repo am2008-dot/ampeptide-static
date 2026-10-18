@@ -39,8 +39,10 @@ const base64ToUtf8 = (b64) => {
   return new TextDecoder().decode(bytes);
 };
 
-// 允许操作的路径白名单：content 下的 md/json + 媒体库目录
-const ALLOWED = /^(content\/[^/]+\.(md|json)|assets\/img\/uploads\/[^/]+\.(png|jpe?g|webp|gif|svg))$/i;
+// 允许操作的路径白名单：content 下的 md/json（含子目录）+ 媒体库目录
+// 注意：必须允许子目录（content/pages/x.md、content/posts/x.md），否则后台看不到任何页面/文章
+const PATH_RE = /^(content\/.+\.(md|json)|assets\/img\/uploads\/[^/]+\.(png|jpe?g|webp|gif|svg))$/i;
+const ALLOWED = (p) => typeof p === 'string' && !!p && !p.includes('..') && !p.startsWith('/') && PATH_RE.test(p);
 
 export async function onRequest(context) {
   const { request, env } = context;
@@ -93,14 +95,14 @@ export async function onRequest(context) {
       const files = (data.tree || [])
         .filter((t) => t.type === 'blob')
         .map((t) => ({ path: t.path, size: t.size }))
-        .filter((t) => ALLOWED.test(t.path));
+        .filter((t) => ALLOWED(t.path));
       return json({ ok: true, files, truncated: !!data.truncated });
     }
 
     // ---------- 读取单个文件 ----------
     if (route === 'file' && request.method === 'GET') {
       const p = url.searchParams.get('path') || '';
-      if (!ALLOWED.test(p)) return json({ ok: false, error: '非法路径' }, 400);
+      if (!ALLOWED(p)) return json({ ok: false, error: '非法路径' }, 400);
       const { ok, data } = await gh(`/repos/${REPO}/contents/${p}?ref=${BRANCH}`);
       if (!ok) return json({ ok: false, error: data.message || '文件不存在' }, 404);
       return json({ ok: true, path: p, sha: data.sha, content: base64ToUtf8(data.content) });
@@ -110,7 +112,7 @@ export async function onRequest(context) {
     if (route === 'save' && request.method === 'POST') {
       const body = await request.json().catch(() => ({}));
       const { path, content, message } = body;
-      if (!path || typeof content !== 'string' || !ALLOWED.test(path)) {
+      if (!path || typeof content !== 'string' || !ALLOWED(path)) {
         return json({ ok: false, error: '参数不完整或路径非法' }, 400);
       }
       // 已存在则带 sha 更新；不存在则新建
@@ -159,7 +161,7 @@ export async function onRequest(context) {
     if (route === 'delete' && request.method === 'POST') {
       const body = await request.json().catch(() => ({}));
       const { path, message } = body;
-      if (!path || !/^content\/[^/]+\.md$/.test(path)) {
+      if (!path || !ALLOWED(path) || !path.endsWith('.md')) {
         return json({ ok: false, error: '只能删除 content 下的 .md 文件' }, 400);
       }
       const cur = await gh(`/repos/${REPO}/contents/${path}?ref=${BRANCH}`);

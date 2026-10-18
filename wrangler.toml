@@ -1,2 +1,6 @@
 name = "amppeptide-static"
 pages_build_output_dir = "dist"
+# Pages Functions 运行时兼容性：后台 API（functions/api/[[route]].js）
+# 需要 nodejs_compat，否则打包报 "No such module node:stream"
+compatibility_date = "2025-04-01"
+compatibility_flags = ["nodejs_compat"]
