@@ -69,6 +69,25 @@ bash deploy.sh
 npx wrangler pages deploy dist --project-name=amppeptide-static --branch=main --commit-dirty=true
 ```
 
+### 已启用：本机定时自动部署（当前生效方案）
+
+后台每保存一次内容就会往 GitHub 提交；本机已配一个定时任务（WorkBuddy 自动化，
+约每小时跑一次），会自动检查 GitHub 有没有新提交，有就构建并发布：
+
+```bash
+bash _autodeploy.sh    # 脚本本体，可手动运行；日志在 _autodeploy.log
+```
+
+- 已部署的提交 SHA 记录在 `_deployed_sha.txt`；没有新提交时脚本静默退出
+- 用 `git archive` 导出到临时目录构建，不碰本地工作区；**禁止 git rebase/reset**
+  （本机实测 `git pull --rebase` 会毁掉 `.git`）
+- wrangler 的 Cloudflare 登录态由 wrangler 自行维护；**不要手动兑换 OAuth 令牌**
+  （会触发重用检测把登录态吊销）。若部署报认证错误，跑一次 `wrangler login`
+  （浏览器里点一次批准即可自动完成）
+- 前提：运行自动化的电脑保持开机、WorkBuddy 保持运行
+- 想改成"推送即部署"（不依赖本机）：按上面的方式 A/B 接上 Cloudflare 构建，
+  然后把这个自动化停掉即可
+
 ## 目录结构
 - `content/` 内容源（页面 / 文章 / 站点配置）—— **后台编辑的就是这里**
 - `src/` 构建脚本（Markdown 解析、HTML 模板、生成器）
