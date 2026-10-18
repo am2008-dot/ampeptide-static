@@ -2,6 +2,7 @@
 title: "Ipamorelin Peptide Supplier | China GH Secretagogue Manufacturer & Wholesale – AMP Peptide"
 description: "Ipamorelin Specification Detail CAS No 170851-70-4 Molecular Formula C38H51N9O5 Molecular Weight 711.87 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing IP5: $45 · IP10: $79 ( (10 vials per box) MOQ..."
 type: "page"
+category: "hormone-related"
 slug: "ipamorelin-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/ipamorelin-peptide-supplier/"

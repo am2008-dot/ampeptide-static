@@ -2,6 +2,7 @@
 title: "Semaglutide Peptide Supplier | China GLP-1 Manufacturer & Wholesale – AMP Peptide"
 description: "Semaglutide GLP-1 receptor agonist research peptide from GMP manufacturer. CAS 910463-68-2, ≥98% HPLC purity. Competitive wholesale pricing available for research institutions."
 type: "page"
+category: "semaglutide-series"
 slug: "semaglutide-peptide-manufacturer"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/semaglutide-peptide-manufacturer/"

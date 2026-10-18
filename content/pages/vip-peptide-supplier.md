@@ -2,6 +2,7 @@
 title: "VIP Peptide Supplier | China Manufacturer & Wholesale for Research – AMP Peptide"
 description: "VIP (Vasoactive Intestinal Peptide) Specification Detail CAS No 40077-57-8 Molecular Formula C147H238N44O42S Molecular Weight 3325.8 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing VIP5: $79 · VIP10: $146 (10 vials per..."
 type: "page"
+category: "signaling-regulatory"
 slug: "vip-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/vip-peptide-supplier/"

@@ -2,6 +2,7 @@
 title: "GHK-Cu Peptide Supplier | China Copper Peptide Manufacturer & Wholesale – AMP Peptide"
 description: "GHK-Cu copper peptide complex from GMP manufacturer. CAS 49557-75-7, ≥98% purity. Widely used in tissue regeneration and wound healing research. Bulk pricing for labs."
 type: "page"
+category: "copper-based-peptides"
 slug: "ghk-cu-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/ghk-cu-peptide-supplier/"

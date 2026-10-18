@@ -2,6 +2,7 @@
 title: "PT-141 Peptide Supplier | China Melanocortin Agonist Manufacturer & Wholesale – AMP Peptide"
 description: "PT-141 (Bremelanotide) Specification Detail CAS No 69106-56-1 Molecular Formula C50H68N14O10S Molecular Weight 1089.27 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing P41: $58 (10 vials per box) MOQ 1 box (10..."
 type: "page"
+category: "signaling-regulatory"
 slug: "pt-141-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/pt-141-peptide-supplier/"

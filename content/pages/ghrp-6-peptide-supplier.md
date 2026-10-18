@@ -2,6 +2,7 @@
 title: "GHRP-6 Peptide Supplier | China GH Secretagogue Manufacturer & Wholesale – AMP Peptide"
 description: "GHRP-6 (Growth Hormone-Releasing Peptide-6) Specification Detail CAS No 87616-84-0 Molecular Formula C46H56N12O6 Molecular Weight 873.02 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing G65: $42 · G610: $69 (10 vials per..."
 type: "page"
+category: "hormone-related"
 slug: "ghrp-6-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/ghrp-6-peptide-supplier/"

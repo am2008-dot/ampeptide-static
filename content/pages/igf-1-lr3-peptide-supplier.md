@@ -2,6 +2,7 @@
 title: "IGF-1 LR3 Peptide Supplier | China Manufacturer & Wholesale for Research – AMP Peptide"
 description: "IGF-1 LR3 (Long R3 Insulin-Like Growth Factor-1) Specification Detail CAS No 946870-92-4 Molecular Formula C997H1553N267O297S7 Molecular Weight 22289.6 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing IG01: $42 · IG1: $185..."
 type: "page"
+category: "signaling-regulatory"
 slug: "igf-1-lr3-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/igf-1-lr3-peptide-supplier/"

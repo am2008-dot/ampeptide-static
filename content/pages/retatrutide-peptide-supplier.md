@@ -2,6 +2,7 @@
 title: "Retatrutide Peptide Supplier | China Triple Agonist Manufacturer & Wholesale – AMP Peptide"
 description: "Retatrutide triple agonist (GIP/GLP-1/glucagon) research peptide. GMP manufactured, ≥98% HPLC purity, available in 10-60mg vials. Wholesale pricing for approved research."
 type: "page"
+category: "retatrutide-series"
 slug: "retatrutide-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/retatrutide-peptide-supplier/"

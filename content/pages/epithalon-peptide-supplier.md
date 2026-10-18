@@ -2,6 +2,7 @@
 title: "Epithalon Peptide Supplier | China Manufacturer & Wholesale for Research – AMP Peptide"
 description: "Epithalon (Epitalon) Specification Detail CAS No 307297-39-2 Molecular Formula C33H53N11O9 Molecular Weight 747.84 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing ET10: $64 · ET50: $185 ( (10 vials per box)..."
 type: "page"
+category: "metabolic-cellular"
 slug: "epithalon-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/epithalon-peptide-supplier/"

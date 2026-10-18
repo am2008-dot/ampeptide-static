@@ -2,6 +2,7 @@
 title: "BPC-157 Peptide Supplier | China GMP Manufacturer & Wholesale – AMP Peptide"
 description: "BPC-157 (Body Protection Compound-157) research peptide from GMP manufacturer. ≥98% HPLC purity, CAS 137525-51-0. Wholesale pricing for lab and institutional research."
 type: "page"
+category: "peptide-reference-materials"
 slug: "bpc-157-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/bpc-157-peptide-supplier/"

@@ -2,6 +2,7 @@
 title: "Oxytocin Peptide Supplier | China Manufacturer & Wholesale for Research – AMP Peptide"
 description: "Oxytocin Specification Detail CAS No 50-56-6 Molecular Formula C43H66N12O12S2 Molecular Weight 1007.19 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing OT2: $40 · OT5: $53 · OT10: $106 (10 vials per..."
 type: "page"
+category: "signaling-regulatory"
 slug: "oxytocin-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/oxytocin-peptide-supplier/"

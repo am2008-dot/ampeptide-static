@@ -82,6 +82,11 @@ function renderHomeCategories() {
   </div></section>`;
 }
 
+let CAT_MAP = {};
+try {
+  CAT_MAP = Object.fromEntries(JSON.parse(readFileSync(join(CONTENT, 'categories.json'), 'utf8')).map((c) => [c.slug, c]));
+} catch (e) { /* 分类文件可选 */ }
+
 const PRODUCT_LINK_MAP = Object.fromEntries((SITE.productLinks || []).map(p => [p.label, p.slug]));
 
 function linkProductNames(html, slug) {
@@ -94,6 +99,14 @@ function linkProductNames(html, slug) {
     }
     return match;
   });
+}
+
+// 产品页顶部分类标签（后台「产品管理」里维护）
+function catChip(entry) {
+  if (!entry.category) return '';
+  const cat = CAT_MAP[entry.category];
+  const label = cat ? cat.name : entry.category;
+  return `<p class="prod-cat-chip"><span>分类</span><a href="/amp-peptide-product-list/">${esc(label)}</a></p>`;
 }
 
 function renderFooter() {
@@ -185,7 +198,7 @@ function buildPage(entry) {
     .replace('{{TITLE}}', `<title>${esc(entry.title)}</title>`)
     .replace('{{META}}', meta)
     .replace('{{HEADER}}', renderHeader(entry.slug))
-    .replace('{{BODY}}', hero + homeCats + `<article class="prose">${body}</article>`)
+    .replace('{{BODY}}', hero + homeCats + catChip(entry) + `<article class="prose">${body}</article>`)
     .replace('{{FOOTER}}', renderFooter())
     .replace('{{JSONLD}}', `<script type="application/ld+json">${JSON.stringify(jsonLd(entry))}</script>`);
   const op = outPath(entry.slug);

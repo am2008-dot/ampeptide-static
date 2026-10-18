@@ -48,3 +48,9 @@ deploy.sh
 
 # Browser verification screenshots
 _ab/
+_autodeploy.sh
+_autodeploy.log
+_autodeploy.lock
+_deployed_sha.txt
+_block.js
+_check.js

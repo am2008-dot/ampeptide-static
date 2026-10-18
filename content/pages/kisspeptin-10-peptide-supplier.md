@@ -2,6 +2,7 @@
 title: "Kisspeptin-10 Peptide Supplier | China Manufacturer & Wholesale for Research – AMP Peptide"
 description: "Kisspeptin-10 (KISS1 Receptor Agonist) Specification Detail CAS No 374675-21-5 Molecular Formula C56H79N15O12 Molecular Weight 1142.33 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing KS5: $61 · KS10: $106 (10 vials per..."
 type: "page"
+category: "hormone-related"
 slug: "kisspeptin-10-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/kisspeptin-10-peptide-supplier/"

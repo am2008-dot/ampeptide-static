@@ -2,6 +2,7 @@
 title: "NAD+ Supplier | China NAD+ Manufacturer & Wholesale for Research – AMP Peptide"
 description: "NAD+ (Nicotinamide Adenine Dinucleotide) research compound. ≥98% purity, GMP manufactured. Essential for cellular energy, sirtuin activation, and aging research. Bulk available."
 type: "page"
+category: "metabolic-cellular"
 slug: "nad-peptide-manufacturer"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/nad-peptide-manufacturer/"

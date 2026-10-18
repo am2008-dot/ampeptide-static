@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Tirzepatide Series",
+    "slug": "tirzepatide-series",
+    "description": "GLP-1 / GIP dual receptor agonist research compounds for metabolic studies.",
+    "image": ""
+  },
+  {
+    "name": "Retatrutide Series",
+    "slug": "retatrutide-series",
+    "description": "Triple hormone agonist (GIP / GLP-1 / glucagon) research materials.",
+    "image": ""
+  },
+  {
+    "name": "Semaglutide Series",
+    "slug": "semaglutide-series",
+    "description": "GLP-1 receptor agonist reference materials with batch traceability.",
+    "image": ""
+  },
+  {
+    "name": "Peptide Reference Materials",
+    "slug": "peptide-reference-materials",
+    "description": "Body protection and thymic peptide reference standards (BPC & TB series).",
+    "image": ""
+  },
+  {
+    "name": "Copper-Based Peptide Compounds",
+    "slug": "copper-based-peptides",
+    "description": "Copper complex peptides for skin and tissue research applications.",
+    "image": ""
+  },
+  {
+    "name": "Cosmetic & Neuroactive Research Materials",
+    "slug": "cosmetic-neuroactive",
+    "description": "Cosmetic-grade and neuroactive peptide compounds for formulation research.",
+    "image": ""
+  },
+  {
+    "name": "Metabolic & Cellular Research Compounds",
+    "slug": "metabolic-cellular",
+    "description": "Mitochondrial and metabolic signaling research compounds.",
+    "image": ""
+  },
+  {
+    "name": "Sleep & Neuro Regulation Compounds",
+    "slug": "sleep-neuro-regulation",
+    "description": "Sleep and neurological regulation research peptides.",
+    "image": ""
+  },
+  {
+    "name": "Hormone-Related Research Compounds",
+    "slug": "hormone-related",
+    "description": "Growth hormone secretagogues and hormone-regulating research peptides.",
+    "image": ""
+  },
+  {
+    "name": "Signaling & Regulatory Compounds",
+    "slug": "signaling-regulatory",
+    "description": "Intracellular and intercellular signaling research compounds.",
+    "image": ""
+  },
+  {
+    "name": "Small Molecules & Growth Research Compounds",
+    "slug": "small-molecules-growth",
+    "description": "Small molecule and growth factor research materials.",
+    "image": ""
+  }
+]

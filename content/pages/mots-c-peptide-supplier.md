@@ -2,6 +2,7 @@
 title: "MOTS-c Peptide Supplier | China Mitochondrial Peptide Manufacturer & Wholesale – AMP Peptide"
 description: "MOTS-c (Mitochondrial Open Reading Frame of the Twelve S rRNA-c) Specification Detail CAS No 1627584-67-5 Molecular Formula Not applicable (16-amino-acid polypeptide) Molecular Weight 2174.5 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities..."
 type: "page"
+category: "metabolic-cellular"
 slug: "mots-c-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/mots-c-peptide-supplier/"

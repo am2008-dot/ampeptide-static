@@ -163,6 +163,27 @@
     .view{padding:18px 14px 50px}
     .topbar{padding:12px 16px}
   }
+
+  /* ---------- 表单 / 分类卡片 / 产品徽标 ---------- */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+  .form-grid .full{grid-column:1/-1}
+  @media(max-width:760px){.form-grid{grid-template-columns:1fr}}
+  .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+  .cat-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:.15s}
+  .cat-card:hover{border-color:var(--blue);box-shadow:0 4px 16px rgba(43,108,176,.08)}
+  .cat-card h4{font-size:14.5px;line-height:1.4}
+  .cat-card .cslug{font-size:12px;color:var(--ink-3);font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+  .cat-card .cdesc{font-size:12.5px;color:var(--ink-2);flex:1;line-height:1.6}
+  .cat-card .cmeta{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+  .cat-card .ops{display:flex;gap:6px}
+  .cat-card .ops button{font-size:12px;padding:4px 10px;border-radius:6px}
+  .rep-row{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px;background:#fafbfc}
+  .rep-row .rep-top{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+  .rep-row .rep-top input{flex:1}
+  .rep-row .rep-sub{padding-left:16px;border-left:2px solid var(--line);margin-bottom:6px}
+  .rep-row .rep-sub input{margin-bottom:6px}
+  .prod-badge{display:inline-block;background:var(--blue-l);color:var(--blue-d);font-size:11.5px;padding:2px 9px;border-radius:20px;font-weight:600;margin-left:8px}
+  .file-row .badges{display:flex;gap:6px;align-items:center;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -187,6 +208,8 @@
       <button data-view="dashboard" class="on"><span class="ico">📊</span><span class="txt">仪表盘</span></button>
       <button data-view="pages"><span class="ico">📄</span><span class="txt">页面管理</span></button>
       <button data-view="posts"><span class="ico">📰</span><span class="txt">博客文章</span></button>
+      <button data-view="products"><span class="ico">📦</span><span class="txt">产品管理</span></button>
+      <button data-view="categories"><span class="ico">🏷️</span><span class="txt">产品分类</span></button>
       <button data-view="settings"><span class="ico">⚙️</span><span class="txt">站点设置</span></button>
       <button data-view="media"><span class="ico">🖼️</span><span class="txt">媒体库</span></button>
     </nav>
@@ -229,17 +252,102 @@
     </section>
 
     <!-- 站点设置 -->
+    <!-- ================= 产品管理 ================= -->
+    <section class="view" id="v-products">
+      <div class="list-head">
+        <input type="search" id="prodSearch" placeholder="搜索产品（名称 / 路径）…">
+        <select id="prodCatFilter" style="padding:9px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;outline:none"><option value="">全部分类</option></select>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" id="prodAdd">+ 新建产品</button>
+      </div>
+      <div class="file-table" id="prodList"></div>
+      <div id="prodEditor" hidden></div>
+    </section>
+
+    <!-- ================= 产品分类 ================= -->
+    <section class="view" id="v-categories">
+      <div class="list-head">
+        <input type="search" id="catSearch" placeholder="搜索分类…">
+        <div class="spacer"></div>
+        <button class="btn btn-primary" id="catAdd">+ 新建分类</button>
+      </div>
+      <div class="cat-grid" id="catGrid"></div>
+      <div class="editor" id="catEditor" hidden>
+        <div class="editor-bar">
+          <button class="btn btn-ghost" id="catBack">← 返回列表</button>
+          <span class="path">content/categories.json</span>
+          <div class="spacer"></div>
+          <button class="btn btn-danger" id="catDel">删除分类</button>
+          <button class="btn btn-primary" id="catSave">保存分类</button>
+        </div>
+        <div class="editor-form" style="border-right:none">
+          <div class="form-grid">
+            <div class="field"><label>分类名称 *</label><input id="c-name" placeholder="如 Copper-Based Peptide Compounds"></div>
+            <div class="field"><label>标识（slug）*</label><input id="c-slug" placeholder="如 copper-based-peptides"></div>
+            <div class="field full"><label>简介</label><textarea id="c-desc" rows="2" placeholder="一句话描述这个分类"></textarea></div>
+            <div class="field full"><label>图片路径（可选）</label><input id="c-image" placeholder="/assets/img/uploads/xxx.jpg"></div>
+          </div>
+          <div class="field full" style="margin-top:14px">
+            <label>该分类下的产品（<span id="c-count">0</span> 个）</label>
+            <div id="c-products" style="color:var(--ink-3);font-size:12.5px;line-height:1.8"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="view" id="v-settings">
       <div class="panel">
-        <h3>站点设置（_site.json）</h3>
-        <p style="margin-bottom:12px">包含：站点名称与描述、导航菜单、首页横幅文案、首页栏目图片、联系方式、底部链接、产品链接映射。保存后同样自动部署。</p>
-        <textarea class="settings-area" id="settingsArea" spellcheck="false"></textarea>
-        <div class="settings-msg" id="settingsMsg"></div>
-        <div style="display:flex;gap:10px;margin-top:10px">
-          <button class="btn btn-primary" id="settingsSave">保存设置</button>
-          <button class="btn btn-ghost" id="settingsFormat">格式化 JSON</button>
-          <button class="btn btn-ghost" id="settingsReload">放弃修改</button>
+        <h3>基本信息</h3>
+        <div class="form-grid">
+          <div class="field"><label>站点简称</label><input id="s-name"></div>
+          <div class="field"><label>站点全称</label><input id="s-fullName"></div>
+          <div class="field"><label>宣传语（tagline）</label><input id="s-tagline"></div>
+          <div class="field"><label>品牌区标题</label><input id="s-brandTitle"></div>
+          <div class="field full"><label>SEO 描述</label><textarea id="s-description" rows="2"></textarea></div>
+          <div class="field full"><label>品牌区描述</label><textarea id="s-brandDesc" rows="2"></textarea></div>
+          <div class="field"><label>站点地址（URL）</label><input id="s-url" placeholder="https://amppeptide.com"></div>
+          <div class="field"><label>Logo 路径</label><input id="s-logo"></div>
+          <div class="field"><label>社交分享图路径</label><input id="s-ogImage"></div>
         </div>
+      </div>
+
+      <div class="panel">
+        <h3>联系方式</h3>
+        <div class="form-grid">
+          <div class="field"><label>邮箱</label><input id="s-email"></div>
+          <div class="field"><label>电话</label><input id="s-phone"></div>
+          <div class="field full"><label>地址</label><input id="s-address"></div>
+          <div class="field"><label>WhatsApp</label><input id="s-whatsapp" placeholder="可留空"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>导航菜单</h3>
+        <p style="margin-bottom:10px">顶级菜单项；「链接」二选一：站内页面填标识（slug，如 about-amp-peptide-china），外链填完整网址。ABOUT 这类下拉菜单用「+ 子项」添加。</p>
+        <div id="navRows"></div>
+        <button class="btn btn-ghost" id="navAddItem">+ 添加顶级菜单</button>
+      </div>
+
+      <div class="panel">
+        <h3>底部链接</h3>
+        <div class="form-grid" style="margin-bottom:10px">
+          <div class="field"><label>声明标题</label><input id="s-noticeTitle"></div>
+        </div>
+        <div id="footRows"></div>
+        <button class="btn btn-ghost" id="footAdd">+ 添加底部链接</button>
+      </div>
+
+      <div class="panel">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" id="settingsSave">保存设置</button>
+          <button class="btn btn-ghost" id="settingsReload">放弃修改</button>
+          <span class="settings-msg" id="settingsMsg"></span>
+        </div>
+        <details style="margin-top:14px">
+          <summary style="cursor:pointer;font-size:13px;color:var(--ink-3)">高级：原始 JSON（首页横幅、栏目图片、产品链接映射等在此编辑）</summary>
+          <textarea class="settings-area" id="settingsArea" spellcheck="false" style="margin-top:10px"></textarea>
+          <div style="font-size:12.5px;color:var(--ink-3);margin-top:6px">改这里面的内容也会一并保存；不碰它则只保存上方表单。</div>
+        </details>
       </div>
     </section>
 
@@ -334,7 +442,7 @@ $('#logoutBtn').addEventListener('click', () => {
 });
 
 /* ==================== 视图切换 ==================== */
-const VIEW_TITLES = { dashboard: '仪表盘', pages: '页面管理', posts: '博客文章', settings: '站点设置', media: '媒体库' };
+const VIEW_TITLES = { dashboard: '仪表盘', pages: '页面管理', posts: '博客文章', products: '产品管理', categories: '产品分类', settings: '站点设置', media: '媒体库' };
 document.querySelectorAll('#sideNav button').forEach((btn) => {
   btn.addEventListener('click', () => switchView(btn.dataset.view));
 });
@@ -345,6 +453,8 @@ function switchView(v) {
   $('#viewTitle').textContent = VIEW_TITLES[v] || '';
   if (v === 'pages') renderList('pages');
   if (v === 'posts') renderList('posts');
+  if (v === 'products') renderProducts();
+  if (v === 'categories') renderCategories();
   if (v === 'settings') loadSettings();
   if (v === 'media') renderMedia();
   if (v === 'dashboard') renderDashboard();
@@ -607,43 +717,434 @@ async function openEditor(kind, path) {
   };
 }
 
-/* ==================== 站点设置 ==================== */
+/* ==================== 产品分类 ==================== */
+let cats = [];
+let catEditing = -1; // -1 = 新建
+
+async function loadCats(force) {
+  if (cats.length && !force) return cats;
+  try {
+    const d = await api('file?path=' + encodeURIComponent('content/categories.json'));
+    const arr = JSON.parse(d.content);
+    cats = Array.isArray(arr) ? arr : [];
+  } catch (e) { cats = []; }
+  return cats;
+}
+function catName(slug) { const c = cats.find((x) => x.slug === slug); return c ? c.name : (slug || '未分类'); }
+
+// 全部产品页 = 带 category frontmatter 的页面
+async function loadProducts() {
+  const files = await loadFiles();
+  const pages = files.filter((f) => f.path.startsWith('content/pages/'));
+  await Promise.all(pages.map(async (f) => {
+    try {
+      const d = await getFile(f.path);
+      const { fm } = parseFm(d.content);
+      f._fm = fm;
+      f._title = fm.title || f.path.split('/').pop();
+      f._cat = fm.category || '';
+    } catch (e) { f._fm = {}; }
+  }));
+  return pages.filter((f) => f._cat);
+}
+
+async function renderCategories() {
+  await loadCats();
+  let products = [];
+  try { products = await loadProducts(); } catch (e) {}
+  const grid = $('#catGrid');
+  const q = ($('#catSearch').value || '').toLowerCase();
+  const list = cats.filter((c) => !q || c.name.toLowerCase().includes(q) || (c.slug || '').includes(q));
+  if (!list.length) { grid.innerHTML = '<div class="empty">还没有分类，点右上角「+ 新建分类」创建</div>'; return; }
+  grid.innerHTML = list.map((c) => {
+    const i = cats.indexOf(c);
+    const n = products.filter((p) => p._cat === c.slug).length;
+    return `<div class="cat-card" data-i="${i}">
+      <h4>${escHtml(c.name)}</h4>
+      <div class="cslug">${escHtml(c.slug)}</div>
+      <div class="cdesc">${escHtml(c.description || '（无简介）')}</div>
+      <div class="cmeta">
+        <span class="tag gray">${n} 个产品</span>
+        <span class="ops">
+          <button class="btn btn-ghost" data-act="edit" data-i="${i}">编辑</button>
+          <button class="btn btn-ghost" data-act="del" data-i="${i}">删除</button>
+        </span>
+      </div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.cat-card').forEach((card) => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      openCatEditor(Number(card.dataset.i));
+    });
+  });
+  grid.querySelectorAll('button[data-act]').forEach((b) => {
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const i = Number(b.dataset.i);
+      if (b.dataset.act === 'edit') openCatEditor(i);
+      else deleteCat(i);
+    });
+  });
+}
+
+async function openCatEditor(i) {
+  catEditing = i;
+  await loadCats();
+  const c = i >= 0 ? cats[i] : { name: '', slug: '', description: '', image: '' };
+  $('#catGrid').hidden = true;
+  $('#catAdd').closest('.list-head').hidden = true;
+  const ed = $('#catEditor');
+  ed.hidden = false;
+  $('#c-name').value = c.name || '';
+  $('#c-slug').value = c.slug || '';
+  $('#c-desc').value = c.description || '';
+  $('#c-image').value = c.image || '';
+  $('#catDel').style.display = i >= 0 ? '' : 'none';
+  try {
+    const products = await loadProducts();
+    const mine = products.filter((p) => p._cat === (c.slug || '\u0000'));
+    $('#c-count').textContent = String(mine.length);
+    $('#c-products').innerHTML = mine.length
+      ? mine.map((p) => '· ' + escHtml(p._title || p.path)).join('<br>')
+      : '（暂无产品归入此分类；到「产品管理」里给产品选分类）';
+  } catch (e) { $('#c-products').textContent = ''; }
+}
+
+function closeCatEditor() {
+  $('#catEditor').hidden = true;
+  $('#catGrid').hidden = false;
+  $('#catAdd').closest('.list-head').hidden = false;
+}
+
+async function deleteCat(i) {
+  const c = cats[i];
+  let n = 0;
+  try { n = (await loadProducts()).filter((p) => p._cat === c.slug).length; } catch (e) {}
+  const warn = n ? `\n\n注意：有 ${n} 个产品属于该分类，删除后这些产品将显示为「未分类」。` : '';
+  if (!confirm(`确定删除分类「${c.name}」？${warn}`)) return;
+  cats.splice(i, 1);
+  await saveCats('后台删除分类: ' + c.name);
+  renderCategories();
+}
+
+async function saveCats(message) {
+  const content = JSON.stringify(cats, null, 2) + '\n';
+  const d = await api('save', { method: 'POST', body: { path: 'content/categories.json', content, message: message || '后台更新: 产品分类' } });
+  if (!d.ok) { toast(d.error || '保存失败', true); return false; }
+  state.cache = {};
+  toast('✓ 分类已保存，网站将在 1–2 分钟内自动更新');
+  return true;
+}
+
+$('#catAdd').addEventListener('click', () => openCatEditor(-1));
+$('#catBack').addEventListener('click', closeCatEditor);
+$('#catSearch').addEventListener('input', renderCategories);
+$('#catDel').addEventListener('click', () => deleteCat(catEditing));
+$('#catSave').addEventListener('click', async () => {
+  const name = $('#c-name').value.trim();
+  let slug = $('#c-slug').value.trim();
+  if (!name || !slug) { toast('分类名称和 slug 不能为空', true); return; }
+  slug = slug.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+  if (cats.some((c, i) => c.slug === slug && i !== catEditing)) { toast('已存在相同 slug 的分类', true); return; }
+  const obj = { name, slug, description: $('#c-desc').value.trim(), image: $('#c-image').value.trim() };
+  if (catEditing >= 0) cats[catEditing] = obj; else cats.push(obj);
+  const ok = await saveCats(catEditing >= 0 ? '后台更新分类: ' + name : '后台新增分类: ' + name);
+  if (ok) { closeCatEditor(); renderCategories(); }
+});
+
+/* ==================== 产品管理 ==================== */
+async function renderProducts() {
+  const box = $('#prodList');
+  box.hidden = false;
+  $('#prodEditor').hidden = true;
+  $('#prodAdd').closest('.list-head').hidden = false;
+  box.innerHTML = '<div class="empty">加载中…</div>';
+  let products = [];
+  try { products = await loadProducts(); } catch (e) { box.innerHTML = `<div class="empty">${escHtml(e.message)}</div>`; return; }
+  // 分类筛选下拉
+  const sel = $('#prodCatFilter');
+  const cur = sel.value;
+  await loadCats();
+  sel.innerHTML = '<option value="">全部分类</option>' + cats.map((c) => `<option value="${escHtml(c.slug)}">${escHtml(c.name)}</option>`).join('');
+  sel.value = cur;
+  const q = ($('#prodSearch').value || '').toLowerCase();
+  const cf = sel.value;
+  const list = products.filter((p) =>
+    (!cf || p._cat === cf) &&
+    (!q || (p._title || '').toLowerCase().includes(q) || p.path.toLowerCase().includes(q)));
+  if (!list.length) { box.innerHTML = '<div class="empty">没有符合条件的产品</div>'; return; }
+  box.innerHTML = list.map((f) => `
+    <div class="file-row" data-path="${escHtml(f.path)}">
+      <div class="t"><b>${escHtml(f._title || f.path)}<span class="prod-badge">${escHtml(catName(f._cat))}</span></b>
+      <small>${escHtml(f.path)}</small></div>
+      <div class="meta">${f._fm && f._fm.modified ? String(f._fm.modified).slice(0, 10) : ''}</div>
+    </div>`).join('');
+  box.querySelectorAll('.file-row').forEach((row) => {
+    row.addEventListener('click', () => openProductEditor(row.dataset.path, false));
+  });
+}
+
+function productTemplateBody(name) {
+  return `**${name || 'Product Name（英文全称）'}**
+
+| Specification | Detail |
+| --- | --- |
+| CAS No |  |
+| Molecular Formula |  |
+| Molecular Weight |  |
+| Purity | ≥98% (HPLC) |
+| Appearance | White lyophilized powder |
+| MOQ | 1 box (10 vials); bulk orders welcome |
+| Research Use Only | For laboratory and scientific research purposes only. Not for human use. |
+
+产品简介（用途、规格、包装、起订量…）。`;
+}
+
+async function openProductEditor(path, isNew) {
+  const ed = $('#prodEditor');
+  const box = $('#prodList');
+  box.hidden = true;
+  $('#prodAdd').closest('.list-head').hidden = true;
+  ed.hidden = false;
+  ed.innerHTML = '<div class="empty">加载中…</div>';
+  await loadCats();
+  let fm = {}, body = '';
+  if (!isNew) {
+    try {
+      const file = await getFile(path);
+      const p = parseFm(file.content);
+      fm = p.fm; body = p.body;
+    } catch (e) { toast(e.message, true); return; }
+  } else {
+    body = productTemplateBody('');
+  }
+  const slugLocked = !isNew;
+  const catOpts = ['<option value="">— 未分类 —</option>'].concat(
+    cats.map((c) => `<option value="${escHtml(c.slug)}"${fm.category === c.slug ? ' selected' : ''}>${escHtml(c.name)}</option>`)
+  ).join('');
+  ed.innerHTML = `
+    <div class="editor">
+      <div class="editor-bar">
+        <button class="btn btn-ghost" id="pBack">← 返回列表</button>
+        <span class="path">${escHtml(isNew ? 'content/pages/<新 slug>.md' : path)}</span>
+        <div class="spacer"></div>
+        ${isNew ? '' : '<button class="btn btn-danger" id="pDel">删除</button>'}
+        <button class="btn btn-primary" id="pSave">${isNew ? '创建产品' : '保存修改'}</button>
+      </div>
+      <div class="editor-body">
+        <div class="editor-form">
+          <div class="form-grid">
+            <div class="field"><label>产品标题 *</label><input id="p-title" value="${escHtml(fm.title || '')}" placeholder="如 BPC-157 Peptide Supplier | AMP Peptide"></div>
+            <div class="field"><label>URL 标识（slug）*${slugLocked ? '（不可修改，改名请新建' : ''}）</label>
+              <input id="p-slug" value="${escHtml(fm.slug || '')}" placeholder="如 bpc-157-peptide-supplier"${slugLocked ? ' disabled style="background:#edf2f7;color:#718096"' : ''}></div>
+            <div class="field"><label>所属分类</label><select id="p-category">${catOpts}</select></div>
+            <div class="field"><label>分享图（可选）</label><input id="p-image" value="${escHtml(fm.image || '')}" placeholder="/assets/img/og-image.jpg"></div>
+            <div class="field full"><label>SEO 描述</label><textarea id="p-description" rows="2">${escHtml(fm.description || '')}</textarea></div>
+            <div class="field full"><label>摘要</label><textarea id="p-excerpt" rows="2">${escHtml(fm.excerpt || '')}</textarea></div>
+          </div>
+          <div class="field body-area">
+            <label>产品详情（Markdown，含规格表）</label>
+            <textarea id="p-body" spellcheck="false">${escHtml(body)}</textarea>
+          </div>
+        </div>
+        <div class="editor-preview"><div class="pv" id="pPv"></div></div>
+      </div>
+    </div>`;
+  const bodyTa = $('#p-body');
+  const pv = $('#pPv');
+  const upd = () => (pv.innerHTML = renderMd(bodyTa.value));
+  bodyTa.addEventListener('input', upd);
+  upd();
+  $('#pBack').onclick = () => renderProducts();
+  $('#pSave').onclick = async () => {
+    const title = $('#p-title').value.trim();
+    const slug = $('#p-slug').value.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+    if (!title || !slug) { toast('标题和 slug 不能为空', true); return; }
+    const out = Object.assign({}, fm); // 保留原有其他 frontmatter 字段
+    out.title = title;
+    out.slug = slug;
+    out.type = 'page';
+    out.category = $('#p-category').value;
+    out.description = $('#p-description').value.trim();
+    out.excerpt = $('#p-excerpt').value.trim();
+    out.image = $('#p-image').value.trim();
+    out.modified = new Date().toISOString().replace(/\.\d+Z$/, '+00:00');
+    const savePath = 'content/pages/' + slug + '.md';
+    const content = serializeFm(out, bodyTa.value);
+    $('#pSave').disabled = true;
+    $('#pSave').textContent = '保存中…';
+    try {
+      const d = await api('save', { method: 'POST', body: { path: savePath, content, message: (isNew ? '后台新增产品: ' : '后台更新产品: ') + title } });
+      if (!d.ok) { toast(d.error || '保存失败', true); return; }
+      state.cache = {};
+      toast('✓ 已保存，网站将在 1–2 分钟内自动更新');
+      renderProducts();
+    } catch (e) { toast(e.message, true); }
+    finally { $('#pSave').disabled = false; $('#pSave').textContent = isNew ? '创建产品' : '保存修改'; }
+  };
+  if (!isNew) {
+    $('#pDel').onclick = async () => {
+      if (!confirm('确定删除产品「' + (fm.title || path) + '」？\n删除后可从 GitHub 历史记录恢复。')) return;
+      const d = await api('delete', { method: 'POST', body: { path, message: '后台删除产品: ' + path } });
+      if (!d.ok) { toast(d.error || '删除失败', true); return; }
+      delete state.cache[path];
+      toast('已删除');
+      renderProducts();
+    };
+  }
+}
+
+$('#prodAdd').addEventListener('click', () => openProductEditor('', true));
+$('#prodSearch').addEventListener('input', renderProducts);
+$('#prodCatFilter').addEventListener('change', renderProducts);
+
+/* ==================== 站点设置（表单式） ==================== */
+let settingsData = null;
+
+function repLinkRow(cls) {
+  const d = document.createElement('div');
+  d.className = 'rep-row';
+  d.innerHTML = `<div class="rep-top">
+    <input class="${cls}-label" placeholder="名称">
+    <input class="${cls}-link" placeholder="slug（站内）或 https://（外链）">
+    <button class="btn btn-danger ${cls}-del" type="button">删除</button>
+  </div>`;
+  d.querySelector('.' + cls + '-del').onclick = () => d.remove();
+  return d;
+}
+
+function navItemEl(it) {
+  const row = document.createElement('div');
+  row.className = 'rep-row';
+  row.innerHTML = `<div class="rep-top">
+      <input class="n-label" value="${escHtml(it.label || '')}" placeholder="菜单名称，如 ABOUT">
+      <input class="n-link" value="${escHtml(it.href || it.slug || '')}" placeholder="slug 或 https:// 外链">
+      <button class="btn btn-ghost n-addsub" type="button">+ 子项</button>
+      <button class="btn btn-danger n-del" type="button">删除</button>
+    </div>
+    <div class="n-subs"></div>`;
+  const subs = row.querySelector('.n-subs');
+  (it.children || []).forEach((ch) => {
+    const sr = repLinkRow('n');
+    sr.classList.add('rep-sub');
+    sr.querySelector('.n-label').value = ch.label || '';
+    sr.querySelector('.n-link').value = ch.href || ch.slug || '';
+    subs.appendChild(sr);
+  });
+  row.querySelector('.n-addsub').onclick = () => {
+    const sr = repLinkRow('n');
+    sr.classList.add('rep-sub');
+    subs.appendChild(sr);
+  };
+  row.querySelector('.n-del').onclick = () => row.remove();
+  return row;
+}
+
+function collectLinks(container) {
+  return [...container.children].map((row) => {
+    const label = row.querySelector('.n-label,.f-label').value.trim();
+    const link = row.querySelector('.n-link,.f-link').value.trim();
+    const o = { label };
+    if (/^https?:\/\//i.test(link)) o.href = link; else o.slug = link;
+    return o;
+  }).filter((x) => x.label);
+}
+
+function collectNav() {
+  return [...$('#navRows').children].map((row) => {
+    const label = row.querySelector('.n-label').value.trim();
+    const link = row.querySelector('.n-link').value.trim();
+    const item = { label };
+    if (/^https?:\/\//i.test(link)) item.href = link; else item.slug = link;
+    const subs = collectLinks(row.querySelector('.n-subs'));
+    if (subs.length) item.children = subs;
+    return item;
+  }).filter((x) => x.label);
+}
+
 async function loadSettings() {
+  let s;
   try {
     const d = await getFile('content/_site.json');
-    $('#settingsArea').value = d.content;
-    $('#settingsMsg').textContent = '';
-    $('#settingsMsg').className = 'settings-msg';
-  } catch (e) { toast(e.message, true); }
+    s = JSON.parse(d.content);
+  } catch (e) { toast(e.message, true); return; }
+  settingsData = s;
+  const v = (id, val) => ($('#' + id).value = val || '');
+  v('s-name', s.name); v('s-fullName', s.fullName); v('s-tagline', s.tagline);
+  v('s-brandTitle', s.brandTitle); v('s-description', s.description); v('s-brandDesc', s.brandDesc);
+  v('s-url', s.url); v('s-logo', s.logo); v('s-ogImage', s.ogImage);
+  const c = s.contact || {};
+  v('s-email', c.email); v('s-phone', c.phone); v('s-address', c.address); v('s-whatsapp', c.whatsapp);
+  const nav = $('#navRows');
+  nav.innerHTML = '';
+  (s.nav || []).forEach((it) => nav.appendChild(navItemEl(it)));
+  const f = s.footer || {};
+  v('s-noticeTitle', f.noticeTitle);
+  const fr = $('#footRows');
+  fr.innerHTML = '';
+  (f.noticeLinks || []).forEach((l) => {
+    const row = repLinkRow('f');
+    row.querySelector('.f-label').value = l.label || '';
+    row.querySelector('.f-link').value = l.href || l.slug || '';
+    fr.appendChild(row);
+  });
+  $('#settingsArea').value = JSON.stringify(s, null, 2);
+  $('#settingsMsg').textContent = '';
+  $('#settingsMsg').className = 'settings-msg';
 }
-$('#settingsFormat').addEventListener('click', () => {
+
+$('#navAddItem').addEventListener('click', () => $('#navRows').appendChild(navItemEl({ label: '', slug: '' })));
+$('#footAdd').addEventListener('click', () => $('#footRows').appendChild(repLinkRow('f')));
+$('#settingsReload').addEventListener('click', loadSettings);
+
+$('#settingsSave').addEventListener('click', async () => {
+  // 基础数据：优先取高级 JSON 文本框（用户可能改过），否则用加载时的数据
+  let base;
+  const raw = $('#settingsArea').value.trim();
+  if (raw) {
+    try { base = JSON.parse(raw); }
+    catch (e) {
+      $('#settingsMsg').textContent = '✗ 高级 JSON 格式错误: ' + e.message;
+      $('#settingsMsg').className = 'settings-msg bad';
+      return;
+    }
+  } else {
+    base = JSON.parse(JSON.stringify(settingsData || {}));
+  }
+  const g = (id) => $('#' + id).value.trim();
+  base.name = g('s-name'); base.fullName = g('s-fullName'); base.tagline = g('s-tagline');
+  base.brandTitle = g('s-brandTitle'); base.description = g('s-description'); base.brandDesc = g('s-brandDesc');
+  base.url = g('s-url'); base.logo = g('s-logo'); base.ogImage = g('s-ogImage');
+  base.contact = Object.assign({}, base.contact || {}, {
+    email: g('s-email'), phone: g('s-phone'), address: g('s-address'), whatsapp: g('s-whatsapp'),
+  });
+  base.nav = collectNav();
+  base.footer = Object.assign({}, base.footer || {}, {
+    noticeTitle: g('s-noticeTitle'),
+    noticeLinks: collectLinks($('#footRows')),
+  });
+  $('#settingsSave').disabled = true;
+  $('#settingsSave').textContent = '保存中…';
   try {
-    $('#settingsArea').value = JSON.stringify(JSON.parse($('#settingsArea').value), null, 2);
-    $('#settingsMsg').textContent = '✓ 已格式化';
+    const d = await api('save', { method: 'POST', body: { path: 'content/_site.json', content: JSON.stringify(base, null, 2) + '\n', message: '后台更新: 站点设置' } });
+    if (!d.ok) {
+      $('#settingsMsg').textContent = '✗ ' + (d.error || '保存失败');
+      $('#settingsMsg').className = 'settings-msg bad';
+      return;
+    }
+    state.cache = {};
+    settingsData = base;
+    $('#settingsArea').value = JSON.stringify(base, null, 2);
+    $('#settingsMsg').textContent = '✓ 已保存，网站将在 1–2 分钟内自动更新';
     $('#settingsMsg').className = 'settings-msg ok';
   } catch (e) {
-    $('#settingsMsg').textContent = '✗ JSON 格式错误: ' + e.message;
+    $('#settingsMsg').textContent = '✗ ' + e.message;
     $('#settingsMsg').className = 'settings-msg bad';
+  } finally {
+    $('#settingsSave').disabled = false;
+    $('#settingsSave').textContent = '保存设置';
   }
-});
-$('#settingsReload').addEventListener('click', loadSettings);
-$('#settingsSave').addEventListener('click', async () => {
-  let obj;
-  try { obj = JSON.parse($('#settingsArea').value); }
-  catch (e) {
-    $('#settingsMsg').textContent = '✗ JSON 格式错误: ' + e.message;
-    $('#settingsMsg').className = 'settings-msg bad';
-    return;
-  }
-  const d = await api('save', { method: 'POST', body: { path: 'content/_site.json', content: JSON.stringify(obj, null, 2) + '\n', message: '后台更新: 站点设置' } });
-  if (!d.ok) {
-    $('#settingsMsg').textContent = '✗ ' + (d.error || '保存失败');
-    $('#settingsMsg').className = 'settings-msg bad';
-    return;
-  }
-  state.cache = {};
-  $('#settingsMsg').textContent = '✓ 已保存，网站将在 1–2 分钟内自动更新';
-  $('#settingsMsg').className = 'settings-msg ok';
 });
 
 /* ==================== 媒体库 ==================== */

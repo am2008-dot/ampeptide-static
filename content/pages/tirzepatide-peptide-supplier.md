@@ -2,6 +2,7 @@
 title: "Tirzepatide Peptide Supplier | China GLP-1/GIP Manufacturer & Wholesale – AMP Peptide"
 description: "Tirzepatide GLP-1/GIP dual agonist research peptide from GMP manufacturer. Multiple specifications (10-60mg), ≥98% purity, COA provided. Bulk orders for research labs."
 type: "page"
+category: "tirzepatide-series"
 slug: "tirzepatide-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/tirzepatide-peptide-supplier/"

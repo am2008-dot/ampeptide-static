@@ -2,6 +2,7 @@
 title: "DSIP Peptide Supplier | China Delta Sleep Peptide Manufacturer & Wholesale – AMP Peptide"
 description: "DSIP (Delta Sleep-Inducing Peptide) Specification Detail CAS No 69431-45-4 Molecular Formula C35H48N10O15 Molecular Weight 848.82 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing DS5: $40 · DS15: $93 ( (10 vials..."
 type: "page"
+category: "sleep-neuro-regulation"
 slug: "dsip-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/dsip-peptide-supplier/"

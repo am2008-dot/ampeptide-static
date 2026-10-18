@@ -2,6 +2,7 @@
 title: "GHRP-2 Peptide Supplier | China Growth Hormone Releasing Peptide Manufacturer – AMP Peptide"
 description: "GHRP-2 (Growth Hormone-Releasing Peptide-2) Specification Detail CAS No 79561-87-6 Molecular Formula C46H56N10O6 Molecular Weight 821.01 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing G25: $42 (10 vials per box) MOQ 1..."
 type: "page"
+category: "hormone-related"
 slug: "ghrp-2-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/ghrp-2-peptide-supplier/"

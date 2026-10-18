@@ -2,6 +2,7 @@
 title: "TB-500 Peptide Supplier | China GMP Manufacturer & Wholesale – AMP Peptide"
 description: "TB-500 (Thymosin Beta-4) research peptide from GMP manufacturer. CAS 77591-33-4, ≥98% purity. Used in angiogenesis and tissue repair research. Bulk supply for labs worldwide."
 type: "page"
+category: "peptide-reference-materials"
 slug: "tb-500-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/tb-500-peptide-supplier/"

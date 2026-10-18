@@ -2,6 +2,7 @@
 title: "Thymosin Alpha-1 Peptide Supplier | China Manufacturer & Wholesale – AMP Peptide"
 description: "Thymosin Alpha-1 Specification Detail CAS No 62304-98-7 Molecular Formula C129H215N33O55 Molecular Weight 3108.4 g/mol Purity ≥98% (HPLC) Appearance White lyophilized powder Manufacturing Standards GMP-compliant facilities Pricing TA5: $93 · TA10: $172 ( (10 vials per box)..."
 type: "page"
+category: "hormone-related"
 slug: "thymosin-alpha-1-peptide-supplier"
 image: "/assets/img/og-image.jpg"
 canonical: "https://amppeptide.com/thymosin-alpha-1-peptide-supplier/"

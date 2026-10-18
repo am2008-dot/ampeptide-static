@@ -1,12 +1,12 @@
 // Shared YAML-frontmatter (single level + simple lists) parser/dumper for content/*.md
 export function parseFrontmatter(md) {
-  const m = md.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!m) return { data: {}, body: md };
   const fm = m[1];
   const body = m[2];
   const data = {};
   let listKey = null;
-  for (const line of fm.split('\n')) {
+  for (const line of fm.split(/\r?\n/)) {
     if (/^\s*-\s+/.test(line) && listKey) {
       data[listKey].push(line.trim().replace(/^-\s+/, '').replace(/^"|"$/g, ''));
       continue;
