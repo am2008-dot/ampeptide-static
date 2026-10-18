@@ -45,3 +45,6 @@ Thumbs.db
 _tls-patch.cjs
 _e2e_test.py
 deploy.sh
+
+# Browser verification screenshots
+_ab/
