@@ -1,0 +1,12 @@
+{
+  "name": "amppeptide-static",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static, responsive rebuild of amppeptide.com — generated from the live site, editable via a Chinese Decap CMS, deployable to Cloudflare Pages.",
+  "type": "module",
+  "scripts": {
+    "ingest": "node src/ingest.mjs",
+    "build": "node src/build.mjs",
+    "preview": "node src/serve.mjs"
+  }
+}

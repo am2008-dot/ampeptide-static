@@ -1,0 +1,108 @@
+# Decap CMS 配置（中文后台）
+# 文档: https://decapcms.org/docs/
+backend:
+  name: github
+  repo: am2008-dot/amppeptide-static
+  branch: main
+  # Decap 3.x 使用 GitHub OAuth (PKCE)，无需客户端密钥。
+  # 请在 GitHub 注册一个 OAuth App，把 Client ID 填到下面：
+  #   Homepage URL:        https://amppeptide.com
+  #   Authorization callback URL: https://amppeptide.com/admin/
+  # 注册地址: https://github.com/settings/developers
+  # 注册后把生成的 Client ID 粘贴到此处（唯一需要手动操作的一步）。
+  client_id: "PASTE_GITHUB_OAUTH_CLIENT_ID_HERE"
+
+# 后台界面语言：中文
+locale: zh
+site_url: https://amppeptide.com
+
+# 媒体文件（图片）存放位置
+media_folder: assets/img/uploads
+public_folder: /assets/img/uploads
+
+publish_mode: simple
+
+collections:
+  - name: pages
+    label: "页面"
+    label_singular: "页面"
+    folder: content/pages
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: "页面标题", widget: string }
+      - { name: description, label: "SEO 描述", widget: text }
+      - { name: slug, label: "URL 路径标识", widget: string, hint: "对应网址 /<slug>/，首页请保持 index" }
+      - { name: excerpt, label: "摘要", widget: text, required: false }
+      - { name: image, label: "社交分享图 (OG Image)", widget: string, required: false, hint: "默认 /assets/img/og-image.jpg" }
+      - { name: body, label: "正文内容", widget: markdown }
+
+  - name: posts
+    label: "博客文章"
+    label_singular: "文章"
+    folder: content/posts
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: "文章标题", widget: string }
+      - { name: description, label: "SEO 描述", widget: text }
+      - { name: slug, label: "URL 路径标识", widget: string }
+      - { name: date, label: "发布时间", widget: datetime, required: false }
+      - { name: modified, label: "修改时间", widget: datetime, required: false }
+      - { name: category, label: "分类", widget: list, field: { name: item, label: "分类名", widget: string }, required: false }
+      - { name: excerpt, label: "摘要", widget: text, required: false }
+      - { name: body, label: "正文内容", widget: markdown }
+
+  - name: site
+    label: "站点设置"
+    files:
+      - name: site
+        label: "全局站点信息"
+        file: content/_site.json
+        fields:
+          - { name: name, label: "站点名称", widget: string }
+          - { name: fullName, label: "完整品牌名", widget: string }
+          - { name: tagline, label: "标语", widget: string }
+          - { name: description, label: "站点描述", widget: text }
+          - name: contact
+            label: "联系信息"
+            widget: object
+            fields:
+              - { name: email, label: "邮箱", widget: string }
+              - { name: phone, label: "电话", widget: string }
+              - { name: address, label: "地址", widget: string }
+          - name: nav
+            label: "顶部导航"
+            widget: list
+            field:
+              name: item
+              label: "菜单项"
+              widget: object
+              fields:
+                - { name: label, label: "显示名", widget: string }
+                - { name: slug, label: "路径", widget: string }
+          - name: footer
+            label: "页脚栏目"
+            widget: object
+            fields:
+              - name: columns
+                label: "栏目"
+                widget: list
+                field:
+                  name: col
+                  label: "栏目"
+                  widget: object
+                  fields:
+                    - { name: title, label: "栏目标题", widget: string }
+                    - name: links
+                      label: "链接"
+                      widget: list
+                      field:
+                        name: link
+                        label: "链接"
+                        widget: object
+                        fields:
+                          - { name: label, label: "显示名", widget: string }
+                          - { name: slug, label: "路径", widget: string }

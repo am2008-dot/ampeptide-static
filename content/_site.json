@@ -1,0 +1,72 @@
+{
+  "name": "AMP Peptide",
+  "fullName": "AMP Peptide – Advanced Molecular Products",
+  "tagline": "Custom Peptide Synthesis Manufacturer",
+  "description": "China-based custom peptide synthesis manufacturer with GMP production in Suzhou, supporting BPC-157, TB-500, GLP-1, cosmetic peptides, and bulk research supply.",
+  "url": "https://amppeptide.com",
+  "logo": "/assets/img/logo.png",
+  "ogImage": "/assets/img/og-image.jpg",
+  "nav": [
+    { "label": "Home", "slug": "index" },
+    { "label": "Products", "slug": "amp-peptide-product-list" },
+    { "label": "Manufacturing", "slug": "amp-peptide-manufacturing-capabilities" },
+    { "label": "Quality", "slug": "amp-peptide-quality-assurance" },
+    { "label": "About", "slug": "about-amp-peptide-china" },
+    { "label": "Blog", "slug": "amp-peptide-blog" },
+    { "label": "Contact", "slug": "contact" }
+  ],
+  "contact": {
+    "email": "sales@amppeptide.com",
+    "phone": "+86 512 000 0000",
+    "address": "Suzhou Industrial Park, Jiangsu, China",
+    "whatsapp": ""
+  },
+  "social": {
+    "linkedin": "",
+    "twitter": "",
+    "youtube": ""
+  },
+  "footer": {
+    "columns": [
+      {
+        "title": "Products",
+        "links": [
+          { "label": "Full Catalog", "slug": "amp-peptide-product-list" },
+          { "label": "Semaglutide", "slug": "semaglutide-peptide-manufacturer" },
+          { "label": "Tirzepatide", "slug": "tirzepatide-peptide-supplier" },
+          { "label": "Retatrutide", "slug": "retatrutide-peptide-supplier" },
+          { "label": "BPC-157", "slug": "bpc-157-peptide-supplier" },
+          { "label": "GHK-Cu", "slug": "ghk-cu-peptide-supplier" }
+        ]
+      },
+      {
+        "title": "Company",
+        "links": [
+          { "label": "About Us", "slug": "about-amp-peptide-china" },
+          { "label": "Manufacturing", "slug": "amp-peptide-manufacturing-capabilities" },
+          { "label": "Quality Assurance", "slug": "amp-peptide-quality-assurance" },
+          { "label": "Contact", "slug": "contact" }
+        ]
+      },
+      {
+        "title": "Resources",
+        "links": [
+          { "label": "Blog", "slug": "amp-peptide-blog" },
+          { "label": "Custom Synthesis Guide", "slug": "custom-peptide-synthesis-complete-scientific-guide" },
+          { "label": "Dosage Calculator", "slug": "peptide-calculator-dosage-tools-hub" },
+          { "label": "Shipping Calculator", "slug": "shipping-calculator" }
+        ]
+      },
+      {
+        "title": "Legal",
+        "links": [
+          { "label": "Privacy Policy", "slug": "privacy-policy" },
+          { "label": "Terms & Conditions", "slug": "terms-and-conditions" },
+          { "label": "Shipping Policy", "slug": "shipping-policy" },
+          { "label": "Refund Policy", "slug": "return-and-refund-policy" },
+          { "label": "Disclaimer", "slug": "disclaimer" }
+        ]
+      }
+    ]
+  }
+}
