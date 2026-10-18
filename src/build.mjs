@@ -26,37 +26,57 @@ function readEntries(folder) {
 const urlFor = slug => slug === 'index' ? SITE.url + '/' : SITE.url + '/' + slug + '/';
 const outPath = slug => slug === 'index' ? join(DIST, 'index.html') : join(DIST, slug, 'index.html');
 
+function navLink(n, active) {
+  const href = n.href || (n.slug === 'index' ? '/' : '/' + n.slug + '/');
+  const external = !!n.href;
+  const cls = (!external && n.slug === active) ? ' class="active"' : '';
+  const ext = external ? ' target="_blank" rel="noopener"' : '';
+  return `<a href="${href}"${cls}${ext}>${esc(n.label)}</a>`;
+}
+
 function renderHeader(active) {
-  const links = SITE.nav.map(n => {
-    const href = n.href || (n.slug === 'index' ? '/' : '/' + n.slug + '/');
-    const external = !!n.href;
-    const cls = (!external && n.slug === active) ? ' class="active"' : '';
-    const ext = external ? ' target="_blank" rel="noopener"' : '';
-    return `<a href="${href}"${cls}${ext}>${esc(n.label)}</a>`;
+  const items = SITE.nav.map(n => {
+    if (n.children && n.children.length) {
+      const sub = n.children.map(c => {
+        const href = c.href || (c.slug === 'index' ? '/' : '/' + c.slug + '/');
+        const ext = c.href ? ' target="_blank" rel="noopener"' : '';
+        return `<li><a href="${href}"${ext}>${esc(c.label)}</a></li>`;
+      }).join('');
+      const open = n.children.some(c => !c.href && c.slug === active) ? ' open' : '';
+      return `<li class="has-children${open}"><a href="${(n.slug === 'index' ? '/' : '/' + n.slug + '/')}">${esc(n.label)}<span class="caret">▾</span></a><ul class="sub-menu">${sub}</ul></li>`;
+    }
+    return `<li>${navLink(n, active)}</li>`;
   }).join('');
   return `<header class="site-header">
   <div class="container nav-wrap">
-    <a class="brand" href="/"><img src="${SITE.logo}" alt="${esc(SITE.name)}"><span>${esc(SITE.name)}<small>${esc(SITE.tagline)}</small></span></a>
+    <a class="brand" href="/">
+      <img src="${SITE.logo}" alt="${esc(SITE.name)} logo">
+      <span class="brand-text"><strong>${esc(SITE.brandTitle || SITE.name)}</strong><small>${esc(SITE.brandDesc || SITE.tagline)}</small></span>
+    </a>
     <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <nav class="nav" id="nav">${links}<a class="btn btn-primary" href="/contact/">Get a Quote</a></nav>
+    <nav class="nav" id="nav"><ul class="menu">${items}</ul></nav>
   </div>
 </header>`;
 }
 
 function renderFooter() {
-  const cols = SITE.footer.columns.map(c => {
-    const links = c.links.map(l => {
-      const href = l.href || (l.slug === 'index' ? '/' : '/' + l.slug + '/');
-      return `<a href="${href}">${esc(l.label)}</a>`;
-    }).join('');
-    return `<div><h4>${esc(c.title)}</h4>${links}</div>`;
-  }).join('');
   const c = SITE.contact;
+  const notice = SITE.footer.noticeLinks.map(l => {
+    const href = l.href || (l.slug === 'index' ? '/' : '/' + l.slug + '/');
+    return `<li><a href="${href}">${esc(l.label)}</a></li>`;
+  }).join('');
   return `<footer class="site-footer">
-  <div class="footer-grid">
-    <div class="footer-brand"><img src="${SITE.logo}" alt="${esc(SITE.name)} logo"><p>${esc(SITE.description)}</p>
-      <p>Email: ${esc(c.email)}<br>Address: ${esc(c.address)}</p></div>
-    ${cols}
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <img src="${SITE.logo}" alt="${esc(SITE.name)} logo">
+      <p class="fb-name">${esc(SITE.brandTitle || SITE.fullName)}</p>
+      <p class="fb-desc">${esc(SITE.brandDesc || SITE.description)}</p>
+      <p class="fb-contact">Email: <a href="mailto:${esc(c.email)}">${esc(c.email)}</a><br>Address: ${esc(c.address)}</p>
+    </div>
+    <div class="footer-notice">
+      <h4>${esc(SITE.footer.noticeTitle || 'Research Use Notice')}</h4>
+      <ul class="notice-links">${notice}</ul>
+    </div>
   </div>
   <div class="footer-bottom"><div class="container">© ${new Date().getFullYear()} ${esc(SITE.fullName)}. All rights reserved. · Research peptides are for laboratory research use only.</div></div>
 </footer>`;
@@ -96,14 +116,11 @@ function buildPage(entry) {
   const h = SITE.hero || {};
   const hero = entry.slug === 'index'
     ? `<section class="hero">
-        <img class="hero-bg" src="${esc(SITE.pageHeroBg)}" alt="">
-        <div class="container">
-          <span class="eyebrow">${esc(h.eyebrow || SITE.name)}</span>
-          <h1>${esc(h.title || SITE.fullName)}</h1>
-          <p class="lead">${esc(h.subtitle || SITE.description)}</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="/${esc((h.primary && h.primary.slug) || 'contact')}/">${esc((h.primary && h.primary.label) || 'Get a Quote')}</a>
-            <a class="btn btn-ghost" href="/${esc((h.secondary && h.secondary.slug) || 'amp-peptide-product-list')}/">${esc((h.secondary && h.secondary.label) || 'View Catalog')}</a>
+        <div class="hero-cover" style="background-image:url('${esc(SITE.pageHeroBg)}')">
+          <div class="hero-dim"></div>
+          <div class="container hero-inner">
+            <h1>${esc(h.title || SITE.fullName)}</h1>
+            <p class="lead">${esc(h.subtitle || SITE.description)}</p>
           </div>
         </div>
       </section>`
