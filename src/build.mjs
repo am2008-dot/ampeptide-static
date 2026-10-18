@@ -62,30 +62,93 @@ function renderHeader(active) {
 </header>`;
 }
 
-function renderHomeCategories() {
-  const cats = SITE.homeCategories || [];
-  if (!cats.length) return '';
-  const cards = cats.map(c => {
-    const href = c.href || (c.slug === 'index' ? '/' : '/' + c.slug + '/');
-    const ext = c.href ? ' target="_blank" rel="noopener"' : '';
-    return `<a class="category-card" href="${href}"${ext}>
-      <div class="category-image"><img src="${esc(c.image)}" alt="${esc(c.label)}"></div>
-      <div class="category-body">
-        <h3>${esc(c.label)}</h3>
-        ${c.description ? `<p>${esc(c.description)}</p>` : ''}
-      </div>
-    </a>`;
-  }).join('');
-  return `<section class="home-categories"><div class="container">
-    <h2 class="section-title">Explore AMP Peptide</h2>
-    <div class="category-grid">${cards}</div>
-  </div></section>`;
-}
-
 let CAT_MAP = {};
 try {
   CAT_MAP = Object.fromEntries(JSON.parse(readFileSync(join(CONTENT, 'categories.json'), 'utf8')).map((c) => [c.slug, c]));
-} catch (e) { /* 分类文件可选 */ }
+} catch (e) { /* categories.json 可选 */ }
+
+// ==================== 首页专用组件 ====================
+const HOME_STATS = [
+  { n: '10+', l: 'Years of peptide manufacturing', s: 'since 2012' },
+  { n: '3,000 m²', l: 'Facility in Suzhou Industrial Park', s: 'incl. GMP workshop' },
+  { n: '80+', l: 'Catalog & custom compounds', s: 'research to bulk' },
+  { n: 'Global', l: 'Export experience', s: 'docs & cold-chain ready' },
+];
+
+const HOME_ADV = [
+  { icon: '🏭', t: 'GMP-Compliant Workshop', d: 'A controlled GMP workshop area inside our 3,000 m² Suzhou facility supports higher-grade production needs.' },
+  { icon: '🔬', t: 'HPLC / MS Analytical QC', d: 'Every batch is tested by HPLC and mass spectrometry, with analytical documentation and batch traceability.' },
+  { icon: '🧬', t: 'Custom Peptide Synthesis', d: 'Solid-phase synthesis, purification and lyophilization — from a single sequence to modified and bulk projects.' },
+  { icon: '🌐', t: 'Global Shipping Support', d: 'Export documentation, cold-chain packing and delivery estimates for international research clients.' },
+];
+
+// 首页明星产品：取 productLinks 前 6 个（站内真实产品页）
+function renderFeaturedProducts() {
+  const links = (SITE.productLinks || []).filter((p) => p.slug && !p.href).slice(0, 6);
+  if (!links.length) return '';
+  const bySlug = Object.fromEntries(pages.map((p) => [p.slug, p]));
+  const cards = links.map((p) => {
+    const pg = bySlug[p.slug];
+    const title = pg ? (pg.title || p.label).split('|')[0].split('–')[0].trim() : p.label;
+    const cat = pg && pg.category ? CAT_MAP[pg.category] : null;
+    return `<a class="prod-card" href="/${esc(p.slug)}/">
+      <div class="prod-card-top"><span class="prod-card-cat">${esc(cat ? cat.name : 'Research Peptide')}</span></div>
+      <h3>${esc(title)}</h3>
+      <p>${esc(pg && pg.excerpt ? pg.excerpt.slice(0, 110) : 'GMP-manufactured research peptide with batch traceability and wholesale pricing.')}</p>
+      <span class="prod-card-link">View product →</span>
+    </a>`;
+  }).join('');
+  return `<section class="home-featured"><div class="container">
+    <div class="sec-head">
+      <div><h2>Featured Research Peptides</h2><p class="sec-sub">Best-selling catalog items with standardized specifications and wholesale pricing.</p></div>
+      <a class="btn btn-outline" href="/amp-peptide-product-list/">Full catalog & pricing</a>
+    </div>
+    <div class="prod-grid">${cards}</div>
+  </div></section>`;
+}
+
+// 首页产品分类：读 categories.json + 各分类产品数
+function renderHomeCategories() {
+  const cats = Object.values(CAT_MAP);
+  if (!cats.length) return '';
+  const count = (slug) => pages.filter((p) => p.category === slug).length;
+  const cards = cats.map((c) => `<a class="cat-tile" href="/product-category/${esc(c.slug)}/">
+      <span class="cat-tile-dot"></span>
+      <span class="cat-tile-body">
+        <b>${esc(c.name)}</b>
+        <small>${count(c.slug)} product${count(c.slug) === 1 ? '' : 's'}</small>
+      </span>
+      <span class="cat-tile-arrow">→</span>
+    </a>`).join('');
+  return `<section class="home-cats"><div class="container">
+    <div class="sec-head">
+      <div><h2>Product Categories</h2><p class="sec-sub">Peptide reference materials organized by research area — from GLP-1 series to cosmetic and signaling compounds.</p></div>
+      <a class="btn btn-outline" href="/amp-peptide-product-list/">All products & pricing</a>
+    </div>
+    <div class="cat-tile-grid">${cards}</div>
+  </div></section>`;
+}
+
+function renderStats() {
+  return `<section class="home-stats"><div class="container"><div class="stat-row">` +
+    HOME_STATS.map((s) => `<div class="stat-cell"><b>${s.n}</b><span>${s.l}</span><small>${s.s}</small></div>`).join('') +
+    `</div></div></section>`;
+}
+
+function renderAdvantages() {
+  return `<section class="home-adv"><div class="container">
+    <div class="sec-head"><div><h2>Why Customers Work with AMP Peptide</h2><p class="sec-sub">Practical manufacturing support — not just a quotation.</p></div></div>
+    <div class="adv-grid">` +
+    HOME_ADV.map((a) => `<div class="adv-card"><span class="adv-ico">${a.icon}</span><h3>${a.t}</h3><p>${a.d}</p></div>`).join('') +
+    `</div></div></section>`;
+}
+
+function renderCtaBand() {
+  return `<section class="cta-band"><div class="container cta-inner">
+    <div><h2>Need a peptide quote?</h2><p>Send us your sequence, quantity and destination — our team replies with pricing, lead time and documentation.</p></div>
+    <a class="btn btn-light" href="/contact/">Talk to our team →</a>
+  </div></section>`;
+}
 
 const PRODUCT_LINK_MAP = Object.fromEntries((SITE.productLinks || []).map(p => [p.label, p.slug]));
 
@@ -170,8 +233,16 @@ function buildPage(entry) {
         <div class="hero-cover" style="background-image:url('${esc(SITE.hero.image || SITE.pageHeroBg)}')">
           <div class="hero-dim"></div>
           <div class="container hero-inner">
+            <div class="hero-eyebrow">China-Based Peptide Manufacturer · Since 2012</div>
             <h1>${esc(h.title || SITE.fullName)}</h1>
             <p class="lead">${esc(h.subtitle || SITE.description)}</p>
+            <div class="hero-cta">
+              <a class="btn btn-light" href="/amp-peptide-product-list/">View products &amp; pricing</a>
+              <a class="btn btn-ghost-light" href="/contact/">Request a quote</a>
+            </div>
+            <ul class="hero-trust">
+              <li>GMP workshop</li><li>HPLC ≥98% purity</li><li>Batch traceability</li><li>Global shipping</li>
+            </ul>
           </div>
         </div>
       </section>`
@@ -179,7 +250,9 @@ function buildPage(entry) {
         <div class="eyebrow">${esc(SITE.name)}</div>
         <h1>${esc(entry.title)}</h1>
       </div></section>`;
-  const homeCats = entry.slug === 'index' ? renderHomeCategories() : '';
+  const isHome = entry.slug === 'index';
+  const homeTop = isHome ? renderStats() + renderHomeCategories() + renderFeaturedProducts() : '';
+  const homeBottom = isHome ? renderAdvantages() + renderCtaBand() : '';
   const meta = [
     `<meta name="description" content="${esc(entry.description || '')}">`,
     `<link rel="canonical" href="${esc(urlFor(entry.slug))}">`,
@@ -198,7 +271,7 @@ function buildPage(entry) {
     .replace('{{TITLE}}', `<title>${esc(entry.title)}</title>`)
     .replace('{{META}}', meta)
     .replace('{{HEADER}}', renderHeader(entry.slug))
-    .replace('{{BODY}}', hero + homeCats + catChip(entry) + `<article class="prose">${body}</article>`)
+    .replace('{{BODY}}', hero + homeTop + catChip(entry) + `<article class="prose">${body}</article>` + homeBottom)
     .replace('{{FOOTER}}', renderFooter())
     .replace('{{JSONLD}}', `<script type="application/ld+json">${JSON.stringify(jsonLd(entry))}</script>`);
   const op = outPath(entry.slug);
@@ -212,6 +285,48 @@ const posts = readEntries('posts');
 const all = [...pages, ...posts];
 const urls = [];
 for (const e of all) if (e.slug) urls.push(buildPage(e));
+
+// ---- 分类归档页：/product-category/<slug>/ ----
+function buildCategoryPage(cat) {
+  const items = pages.filter((p) => p.category === cat.slug);
+  const cards = items.map((p) => {
+    const t = (p.title || p.slug).split('|')[0].split('–')[0].trim();
+    return `<a class="cat-prod" href="/${esc(p.slug)}/">
+      <b>${esc(t)}</b>
+      ${p.excerpt ? `<small>${esc(p.excerpt.slice(0, 140))}</small>` : ''}
+      <span>View product →</span>
+    </a>`;
+  }).join('');
+  const entry = {
+    title: cat.name + ' — AMP Peptide',
+    description: (cat.description || cat.name) + ' Research peptides from AMP Peptide, a China-based GMP manufacturer. Wholesale supply with batch traceability.',
+    slug: 'product-category/' + cat.slug,
+    image: SITE.ogImage,
+    type: 'page',
+  };
+  const bodyHtml = `<section class="page-hero"><div class="container">
+        <div class="eyebrow">Product Category</div>
+        <h1>${esc(cat.name)}</h1>
+        ${cat.description ? `<p class="page-hero-sub">${esc(cat.description)}</p>` : ''}
+      </div></section>
+      <section class="cat-archive"><div class="container">
+        ${items.length ? `<div class="cat-prod-grid">${cards}</div>` : '<p class="empty">该分类下暂无产品。</p>'}
+        <p style="margin-top:26px"><a class="btn btn-primary" href="/amp-peptide-product-list/">← Back to full catalog &amp; pricing</a></p>
+      </div></section>`;
+  const html = readFileSync(join(ROOT, 'src', 'template.html'), 'utf8')
+    .replace('{{TITLE}}', `<title>${esc(entry.title)}</title>`)
+    .replace('{{META}}', `<meta name="description" content="${esc(entry.description)}"><link rel="canonical" href="${esc(urlFor(entry.slug))}"><meta property="og:type" content="website"><meta property="og:title" content="${esc(entry.title)}"><meta property="og:image" content="${esc(SITE.url + SITE.ogImage)}">`)
+    .replace('{{HEADER}}', renderHeader('amp-peptide-product-list'))
+    .replace('{{BODY}}', bodyHtml)
+    .replace('{{FOOTER}}', renderFooter())
+    .replace('{{JSONLD}}', '');
+  const op = join(DIST, 'product-category', cat.slug, 'index.html');
+  mkdirSync(dirname(op), { recursive: true });
+  writeFileSync(op, html);
+  urls.push(urlFor(entry.slug));
+}
+for (const cat of Object.values(CAT_MAP)) buildCategoryPage(cat);
+
 
 // copy static assets
 if (existsSync(join(ROOT, 'assets'))) cpSync(join(ROOT, 'assets'), join(DIST, 'assets'), { recursive: true });
