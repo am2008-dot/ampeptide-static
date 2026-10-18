@@ -109,9 +109,10 @@ function renderFeaturedProducts() {
 
 // 首页产品分类：读 categories.json + 各分类产品数
 function renderHomeCategories() {
-  const cats = Object.values(CAT_MAP);
-  if (!cats.length) return '';
   const count = (slug) => pages.filter((p) => p.category === slug).length;
+  // 首页只展示有产品的分类，按产品数降序；空分类保留在后台管理与归档页
+  const cats = Object.values(CAT_MAP).filter((c) => count(c.slug) > 0).sort((a, b) => count(b.slug) - count(a.slug));
+  if (!cats.length) return '';
   const cards = cats.map((c) => `<a class="cat-tile" href="/product-category/${esc(c.slug)}/">
       <span class="cat-tile-dot"></span>
       <span class="cat-tile-body">
