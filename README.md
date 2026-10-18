@@ -31,19 +31,33 @@ Decap 通过 GitHub OAuth 登录，需在 GitHub 注册一个 OAuth App（GitHub
 
 > 已绑定自定义域名后，回调填 `https://amppeptide.com/admin/` 即可。Decap 3.x 用 PKCE，无需客户端密钥。
 
-## 部署到 Cloudflare Pages（推荐：连接 GitHub）
-1. Cloudflare Dashboard → **Workers & Pages → Create → Pages → Connect to Git**
-2. 选择仓库 `am2008-dot/amppeptide-static`
-3. 构建设置：
-   - **Build command：** `node src/build.mjs`
-   - **Output directory：** `dist`
-   - Node.js 版本：22（默认即可）
-4. 保存并部署。之后每次 `git push` 自动构建发布。
-5. （可选）**Custom domains** 绑定 `amppeptide.com` 并配置 DNS。
+## 部署到 Cloudflare Pages（已完成 ✅）
 
-### 手动部署（可选）
+站点已通过 `wrangler pages deploy` 发布到 Cloudflare Pages：
+- **生产地址：** https://amppeptide-static.pages.dev （生产部署，对应 `main` 分支）
+- 项目名：`amppeptide-static`（账号：`Am2008@gmail.com's Account`）
+
+### 实现「git push 自动部署」的两种方式（二选一，均需你在控制台点一下）
+
+**方式 A — Cloudflare 直连 Git（最简单，推荐）**
+1. Cloudflare Dashboard → **Workers & Pages → amppeptide-static → Settings → Builds & deployments → Connect GitHub repository**
+2. 选择仓库 `am2008-dot/amppeptide-static`，设分支 `main`
+3. 构建设置：**Build command = `node src/build.mjs`**，**Output directory = `dist`**
+4. 保存。之后每次 `git push` 自动构建发布。
+
+**方式 B — GitHub Actions（已内置工作流，需一个 Token 密钥）**
+仓库已含 `.github/workflows/deploy.yml`，只要在 GitHub 仓库加一个 Secret 即可全自动化：
+1. Cloudflare Dashboard → **My Profile → API Tokens → Create Token** → 用模板 **"Cloudflare Pages: Edit"**（或自定义：Account 下 Pages 的 Edit 权限，资源限定本项目）
+2. 复制生成的 Token
+3. GitHub 仓库 **Settings → Secrets → Actions → New repository secret**：
+   - Name：`CF_API_TOKEN`，Value：上面复制的 Token
+4. 之后每次 `git push` 自动部署（无需连 Git）。
+
+> 注：当前 Cloudflare 登录用的是本机保存的 OAuth token，它没有"创建 API Token"的权限，所以方式 B 的 Token 需你在控制台手动生成一次。方式 A 则完全无需 Token。
+
+### 手动部署（随时可重跑）
 ```bash
-npx wrangler pages deploy dist --project-name=amppeptide-static
+npx wrangler pages deploy dist --project-name=amppeptide-static --branch=main --commit-dirty=true
 ```
 
 ## 目录结构
