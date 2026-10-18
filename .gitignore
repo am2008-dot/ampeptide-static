@@ -3,9 +3,13 @@
 
 # Dependencies (none required — pure Node, no install)
 /node_modules/
+/.venv/
 
 # Local quarantine of raw WordPress dumps (not part of the site)
 _raw/
+
+# Design recon dumps (original CSS/HTML pulled for reference only)
+_recon/
 
 # Local/private machine state — never commit
 .workbuddy/

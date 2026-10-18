@@ -3,21 +3,22 @@
   "fullName": "AMP Peptide – Advanced Molecular Products",
   "tagline": "Custom Peptide Synthesis Manufacturer",
   "description": "China-based custom peptide synthesis manufacturer with GMP production in Suzhou, supporting BPC-157, TB-500, GLP-1, cosmetic peptides, and bulk research supply.",
-  "url": "https://amppeptide.com",
+  "url": "https://amppeptide-static.pages.dev",
   "logo": "/assets/img/logo.png",
   "ogImage": "/assets/img/og-image.jpg",
   "brandTitle": "AMP Peptide - China Peptide Manufacturer",
   "brandDesc": "Professional China Peptide Manufacturer Bulk Supply",
   "nav": [
     { "label": "HOME", "slug": "index" },
-    { "label": "ABOUT", "slug": "about-amp-peptide-china", "children": [
-      { "label": "AMP Peptide Capabilities", "slug": "amp-peptide-manufacturing-capabilities" },
-      { "label": "AMP Peptide Quality Assurance", "slug": "amp-peptide-quality-assurance" },
-      { "label": "AMP Database", "href": "https://research.amppeptide.com/" }
-    ]},
-    { "label": "AMP Peptide Capabilities", "slug": "amp-peptide-manufacturing-capabilities" },
-    { "label": "AMP Peptide Quality Assurance", "slug": "amp-peptide-quality-assurance" },
-    { "label": "AMP Database", "href": "https://research.amppeptide.com/" },
+    {
+      "label": "ABOUT",
+      "slug": "about-amp-peptide-china",
+      "children": [
+        { "label": "AMP Peptide Capabilities", "slug": "amp-peptide-manufacturing-capabilities" },
+        { "label": "AMP Peptide Quality Assurance", "slug": "amp-peptide-quality-assurance" },
+        { "label": "AMP Database", "href": "https://research.amppeptide.com/" }
+      ]
+    },
     { "label": "PRODUCT & PRICING", "slug": "amp-peptide-product-list" },
     { "label": "SHIPPING CALCULATOR", "slug": "shipping-calculator" },
     { "label": "BLOG", "slug": "amp-peptide-blog" },
@@ -25,9 +26,83 @@
   ],
   "hero": {
     "title": "AMP Peptide | Advanced Molecular Products Wholesale",
-    "subtitle": "Manufacturer Direct Supply  ·  Competitive Wholesale Pricing  ·  Global Shipping  ·  Single Box Orders Available"
+    "subtitle": "Manufacturer Direct Supply  ·  Competitive Wholesale Pricing  ·  Global Shipping  ·  Single Box Orders Available",
+    "image": "/assets/img/uploads/hero.jpg"
   },
   "pageHeroBg": "/assets/img/uploads/hero.jpg",
+  "homeCategories": [
+    {
+      "label": "HOME",
+      "slug": "index",
+      "image": "/assets/img/uploads/hero.jpg",
+      "description": "China peptide manufacturer for research and bulk supply."
+    },
+    {
+      "label": "ABOUT",
+      "slug": "about-amp-peptide-china",
+      "image": "/assets/img/uploads/workshop.jpg",
+      "description": "10 years of peptide manufacturing experience in Suzhou, China."
+    },
+    {
+      "label": "PRODUCT & PRICING",
+      "slug": "amp-peptide-product-list",
+      "image": "/assets/img/uploads/catalog.jpg",
+      "description": "GLP-1, cosmetic, custom peptides and wholesale pricing."
+    },
+    {
+      "label": "SHIPPING CALCULATOR",
+      "slug": "shipping-calculator",
+      "image": "/assets/img/uploads/shipping.jpg",
+      "description": "Check shipping cost and delivery estimates."
+    },
+    {
+      "label": "BLOG",
+      "slug": "amp-peptide-blog",
+      "image": "/assets/img/uploads/products3.jpg",
+      "description": "Peptide research updates, manufacturing insights and news."
+    },
+    {
+      "label": "CONTACT",
+      "slug": "contact",
+      "image": "/assets/img/logo.png",
+      "description": "Get a quote or talk to our peptide team."
+    }
+  ],
+  "productLinks": [
+    { "label": "Tirzepatide", "slug": "tirzepatide-peptide-supplier" },
+    { "label": "Retatrutide", "slug": "retatrutide-peptide-supplier" },
+    { "label": "Semaglutide", "slug": "semaglutide-peptide-manufacturer" },
+    { "label": "BPC-157", "slug": "bpc-157-peptide-supplier" },
+    { "label": "TB-500", "slug": "tb-500-peptide-supplier" },
+    { "label": "GHK-Cu", "slug": "ghk-cu-peptide-supplier" },
+    { "label": "AHK-Cu", "slug": "ahk-cu-peptide-supplier" },
+    { "label": "Snap-8", "slug": "snap-8-peptide-supplier" },
+    { "label": "Semax", "slug": "semax-peptide-supplier" },
+    { "label": "Selank", "slug": "selank-peptide-supplier" },
+    { "label": "NAD+", "slug": "nad-peptide-manufacturer" },
+    { "label": "MOTS-c", "slug": "mots-c-peptide-supplier" },
+    { "label": "Epithalon", "slug": "epithalon-peptide-supplier" },
+    { "label": "DSIP", "slug": "dsip-peptide-supplier" },
+    { "label": "Thymosin Alpha-1", "slug": "thymosin-alpha-1-peptide-supplier" },
+    { "label": "Ipamorelin", "slug": "ipamorelin-peptide-supplier" },
+    { "label": "GHRP-2", "slug": "ghrp-2-peptide-supplier" },
+    { "label": "GHRP-6", "slug": "ghrp-6-peptide-supplier" },
+    { "label": "Kisspeptin-10", "slug": "kisspeptin-10-peptide-supplier" },
+    { "label": "VIP", "slug": "vip-peptide-supplier" },
+    { "label": "IGF-1 LR3", "slug": "igf-1-lr3-peptide-supplier" },
+    { "label": "Oxytocin", "slug": "oxytocin-peptide-supplier" },
+    { "label": "PT-141", "slug": "pt-141-peptide-supplier" },
+    { "label": "Ara-290", "slug": "ara-290-peptide-supplier" },
+    { "label": "SS-31", "slug": "ss-31-peptide-supplier" },
+    { "label": "MT-1", "slug": "melanotan-i-peptide-supplier" },
+    { "label": "MT-2", "slug": "melanotan-ii-peptide-supplier" },
+    { "label": "5-Amino-1MQ", "slug": "5-amino-1mq-research-compound" },
+    { "label": "CJC-1295 NO DAC", "slug": "cjc-1295-peptide-supplier" },
+    { "label": "CJC-1295 DAC", "slug": "cjc-1295-peptide-supplier" },
+    { "label": "Tesamorelin", "slug": "tesamorelin-peptide-supplier" },
+    { "label": "AOD-9604", "slug": "aod-9604-peptide-supplier" },
+    { "label": "CJC-1295 + Ipamorelin", "slug": "cjc-1295-peptide-supplier" }
+  ],
   "contact": {
     "email": "sales@amppeptide.com",
     "phone": "+86 512 000 0000",

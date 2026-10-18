@@ -6,21 +6,27 @@ backend:
   branch: main
   # Decap 3.x 使用 GitHub OAuth (PKCE)，无需客户端密钥。
   # 请在 GitHub 注册一个 OAuth App，把 Client ID 填到下面：
-  #   Homepage URL:        https://amppeptide.com
-  #   Authorization callback URL: https://amppeptide.com/admin/
+  #   Homepage URL:        https://amppeptide-static.pages.dev
+  #   Authorization callback URL: https://amppeptide-static.pages.dev/admin/
   # 注册地址: https://github.com/settings/developers
   # 注册后把生成的 Client ID 粘贴到此处（唯一需要手动操作的一步）。
   client_id: "PASTE_GITHUB_OAUTH_CLIENT_ID_HERE"
 
 # 后台界面语言：中文
 locale: zh
-site_url: https://amppeptide.com
+site_url: https://amppeptide-static.pages.dev
 
 # 媒体文件（图片）存放位置
 media_folder: assets/img/uploads
 public_folder: /assets/img/uploads
 
 publish_mode: simple
+
+# 可重复使用的字段片段
+nav_link_fields: &nav_link_fields
+  - { name: label, label: "显示名称", widget: string }
+  - { name: slug, label: "内部页面路径", widget: string, required: false, hint: "例如 about-amp-peptide-china，外链请留空" }
+  - { name: href, label: "外部链接", widget: string, required: false, hint: "内部页面请留空" }
 
 collections:
   - name: pages
@@ -30,12 +36,14 @@ collections:
     extension: md
     format: frontmatter
     slug: "{{slug}}"
+    create: true
+    delete: true
     fields:
       - { name: title, label: "页面标题", widget: string }
       - { name: description, label: "SEO 描述", widget: text }
       - { name: slug, label: "URL 路径标识", widget: string, hint: "对应网址 /<slug>/，首页请保持 index" }
       - { name: excerpt, label: "摘要", widget: text, required: false }
-      - { name: image, label: "社交分享图 (OG Image)", widget: string, required: false, hint: "默认 /assets/img/og-image.jpg" }
+      - { name: image, label: "社交分享图 (OG Image)", widget: image, required: false, hint: "默认使用站点 og-image" }
       - { name: body, label: "正文内容", widget: markdown }
 
   - name: posts
@@ -45,18 +53,26 @@ collections:
     extension: md
     format: frontmatter
     slug: "{{slug}}"
+    create: true
+    delete: true
     fields:
       - { name: title, label: "文章标题", widget: string }
       - { name: description, label: "SEO 描述", widget: text }
       - { name: slug, label: "URL 路径标识", widget: string }
       - { name: date, label: "发布时间", widget: datetime, required: false }
       - { name: modified, label: "修改时间", widget: datetime, required: false }
-      - { name: category, label: "分类", widget: list, field: { name: item, label: "分类名", widget: string }, required: false }
+      - name: category
+        label: "分类"
+        widget: list
+        field: { name: item, label: "分类名", widget: string }
+        required: false
       - { name: excerpt, label: "摘要", widget: text, required: false }
+      - { name: image, label: "封面图", widget: image, required: false }
       - { name: body, label: "正文内容", widget: markdown }
 
   - name: site
     label: "站点设置"
+    delete: false
     files:
       - name: site
         label: "全局站点信息"
@@ -66,6 +82,54 @@ collections:
           - { name: fullName, label: "完整品牌名", widget: string }
           - { name: tagline, label: "标语", widget: string }
           - { name: description, label: "站点描述", widget: text }
+          - { name: url, label: "站点 URL", widget: string, hint: "带 https:// 的完整域名" }
+          - { name: logo, label: "Logo", widget: image }
+          - { name: ogImage, label: "默认分享图", widget: image }
+          - { name: brandTitle, label: "品牌标题", widget: string }
+          - { name: brandDesc, label: "品牌副标题", widget: string }
+
+          - name: hero
+            label: "首页大图"
+            widget: object
+            fields:
+              - { name: title, label: "主标题", widget: string }
+              - { name: subtitle, label: "副标题", widget: text }
+              - { name: image, label: "背景图", widget: image }
+
+          - name: nav
+            label: "顶部导航（仅 6 个一级栏目）"
+            widget: list
+            min: 1
+            fields:
+              - { name: label, label: "显示名称", widget: string }
+              - { name: slug, label: "内部页面路径", widget: string, required: false, hint: "外链请留空" }
+              - { name: href, label: "外部链接", widget: string, required: false, hint: "内部页面请留空" }
+              - name: children
+                label: "下拉子菜单"
+                widget: list
+                required: false
+                fields:
+                  - { name: label, label: "显示名称", widget: string }
+                  - { name: slug, label: "内部页面路径", widget: string, required: false, hint: "外链请留空" }
+                  - { name: href, label: "外部链接", widget: string, required: false, hint: "内部页面请留空" }
+
+          - name: homeCategories
+            label: "首页栏目图片卡片"
+            widget: list
+            fields:
+              - { name: label, label: "栏目名称", widget: string }
+              - { name: slug, label: "内部页面路径", widget: string, required: false }
+              - { name: href, label: "外部链接", widget: string, required: false }
+              - { name: image, label: "栏目图片", widget: image }
+              - { name: description, label: "简短描述", widget: text, required: false }
+
+          - name: productLinks
+            label: "产品列表页自动链接"
+            widget: list
+            fields:
+              - { name: label, label: "产品名称", widget: string }
+              - { name: slug, label: "详情页路径", widget: string, hint: "对应网址 /<slug>/" }
+
           - name: contact
             label: "联系信息"
             widget: object
@@ -73,36 +137,17 @@ collections:
               - { name: email, label: "邮箱", widget: string }
               - { name: phone, label: "电话", widget: string }
               - { name: address, label: "地址", widget: string }
-          - name: nav
-            label: "顶部导航"
-            widget: list
-            field:
-              name: item
-              label: "菜单项"
-              widget: object
-              fields:
-                - { name: label, label: "显示名", widget: string }
-                - { name: slug, label: "路径", widget: string }
+              - { name: whatsapp, label: "WhatsApp", widget: string, required: false }
+
           - name: footer
-            label: "页脚栏目"
+            label: "页脚"
             widget: object
             fields:
-              - name: columns
-                label: "栏目"
+              - { name: noticeTitle, label: "公告标题", widget: string }
+              - name: noticeLinks
+                label: "公告链接"
                 widget: list
-                field:
-                  name: col
-                  label: "栏目"
-                  widget: object
-                  fields:
-                    - { name: title, label: "栏目标题", widget: string }
-                    - name: links
-                      label: "链接"
-                      widget: list
-                      field:
-                        name: link
-                        label: "链接"
-                        widget: object
-                        fields:
-                          - { name: label, label: "显示名", widget: string }
-                          - { name: slug, label: "路径", widget: string }
+                fields:
+                  - { name: label, label: "显示名称", widget: string }
+                  - { name: slug, label: "内部页面路径", widget: string, required: false, hint: "外链请留空" }
+                  - { name: href, label: "外部链接", widget: string, required: false, hint: "内部页面请留空" }

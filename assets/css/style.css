@@ -95,6 +95,21 @@ h3{font-size:clamp(18px,2.2vw,24px)}
 .hero-inner h1{color:#fff;font-size:clamp(28px,4.4vw,52px);margin:0 0 18px;line-height:1.1}
 .hero-inner .lead{color:rgba(255,255,255,.92);font-size:clamp(15px,1.6vw,19px);margin:0;max-width:640px}
 
+/* ---------------- Home category cards ---------------- */
+.home-categories{padding:50px 0 20px}
+.home-categories .section-title{text-align:center;color:var(--blue);margin:0 0 36px;font-size:clamp(24px,3vw,32px)}
+.category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.category-card{
+  display:flex;flex-direction:column;background:var(--white);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .2s,box-shadow .2s;
+}
+.category-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.category-image{aspect-ratio:16/10;overflow:hidden;background:var(--soft)}
+.category-image img{width:100%;height:100%;object-fit:cover;display:block}
+.category-body{padding:18px 20px}
+.category-body h3{margin:0 0 8px;color:var(--ink);font-size:17px}
+.category-body p{margin:0;color:var(--gray2);font-size:14px;line-height:1.5}
+
 /* ---------------- Inner page hero ---------------- */
 .page-hero{
   background:linear-gradient(120deg,var(--blue),var(--blue-dark));color:#fff;
@@ -176,8 +191,15 @@ h3{font-size:clamp(18px,2.2vw,24px)}
   .sub-menu li a{padding:11px 36px;background:var(--soft2)}
   .hero-cover{min-height:380px}
   .hero-inner{padding:0 24px}
+  .home-categories{padding:36px 0 10px}
+  .category-grid{grid-template-columns:repeat(2,1fr);gap:18px}
+  .category-body{padding:14px 16px}
+  .category-body h3{font-size:15px}
   .prose{padding:26px 20px}
   .notice-links{columns:1}
+}
+@media (max-width:560px){
+  .category-grid{grid-template-columns:1fr}
 }
 @media (max-width:560px){
   .brand-text small{display:none}

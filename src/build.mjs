@@ -59,6 +59,40 @@ function renderHeader(active) {
 </header>`;
 }
 
+function renderHomeCategories() {
+  const cats = SITE.homeCategories || [];
+  if (!cats.length) return '';
+  const cards = cats.map(c => {
+    const href = c.href || (c.slug === 'index' ? '/' : '/' + c.slug + '/');
+    const ext = c.href ? ' target="_blank" rel="noopener"' : '';
+    return `<a class="category-card" href="${href}"${ext}>
+      <div class="category-image"><img src="${esc(c.image)}" alt="${esc(c.label)}"></div>
+      <div class="category-body">
+        <h3>${esc(c.label)}</h3>
+        ${c.description ? `<p>${esc(c.description)}</p>` : ''}
+      </div>
+    </a>`;
+  }).join('');
+  return `<section class="home-categories"><div class="container">
+    <h2 class="section-title">Explore AMP Peptide</h2>
+    <div class="category-grid">${cards}</div>
+  </div></section>`;
+}
+
+const PRODUCT_LINK_MAP = Object.fromEntries((SITE.productLinks || []).map(p => [p.label, p.slug]));
+
+function linkProductNames(html, slug) {
+  if (slug !== 'amp-peptide-product-list') return html;
+  // Only link bare product names inside table cells, skip if already linked
+  return html.replace(/<td>([^<]+?)<\/td>/g, (match, text) => {
+    const key = text.trim();
+    if (PRODUCT_LINK_MAP[key]) {
+      return `<td><a href="/${PRODUCT_LINK_MAP[key]}/">${esc(key)}</a></td>`;
+    }
+    return match;
+  });
+}
+
 function renderFooter() {
   const c = SITE.contact;
   const notice = SITE.footer.noticeLinks.map(l => {
@@ -109,14 +143,15 @@ function jsonLd(entry) {
 }
 
 function buildPage(entry) {
-  const body = mdToHtml(entry.body || '')
+  let body = mdToHtml(entry.body || '')
     // page title is already rendered by the hero / page-hero banner →
     // demote any in-body H1 to H2 so each page keeps a single H1
     .replace(/<h1([^>]*)>/g, '<h2$1>').replace(/<\/h1>/g, '</h2>');
+  body = linkProductNames(body, entry.slug);
   const h = SITE.hero || {};
   const hero = entry.slug === 'index'
     ? `<section class="hero">
-        <div class="hero-cover" style="background-image:url('${esc(SITE.pageHeroBg)}')">
+        <div class="hero-cover" style="background-image:url('${esc(SITE.hero.image || SITE.pageHeroBg)}')">
           <div class="hero-dim"></div>
           <div class="container hero-inner">
             <h1>${esc(h.title || SITE.fullName)}</h1>
@@ -128,6 +163,7 @@ function buildPage(entry) {
         <div class="eyebrow">${esc(SITE.name)}</div>
         <h1>${esc(entry.title)}</h1>
       </div></section>`;
+  const homeCats = entry.slug === 'index' ? renderHomeCategories() : '';
   const meta = [
     `<meta name="description" content="${esc(entry.description || '')}">`,
     `<link rel="canonical" href="${esc(urlFor(entry.slug))}">`,
@@ -146,7 +182,7 @@ function buildPage(entry) {
     .replace('{{TITLE}}', `<title>${esc(entry.title)}</title>`)
     .replace('{{META}}', meta)
     .replace('{{HEADER}}', renderHeader(entry.slug))
-    .replace('{{BODY}}', hero + `<article class="prose">${body}</article>`)
+    .replace('{{BODY}}', hero + homeCats + `<article class="prose">${body}</article>`)
     .replace('{{FOOTER}}', renderFooter())
     .replace('{{JSONLD}}', `<script type="application/ld+json">${JSON.stringify(jsonLd(entry))}</script>`);
   const op = outPath(entry.slug);
