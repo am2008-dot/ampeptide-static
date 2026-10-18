@@ -1,5 +1,5 @@
 // Build the static site: content/*.md -> dist/*.html (clean URLs)
-import { readFileSync, writeFileSync, mkdirSync, cpSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, cpSync, existsSync, readdirSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mdToHtml } from './markdown.mjs';
@@ -9,6 +9,9 @@ const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const CONTENT = join(ROOT, 'content');
 const DIST = join(ROOT, 'dist');
 const SITE = JSON.parse(readFileSync(join(CONTENT, '_site.json'), 'utf8'));
+
+// 每次构建前清空 dist，避免残留旧文件
+if (existsSync(DIST)) rmSync(DIST, { recursive: true, force: true });
 
 function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -200,8 +203,11 @@ for (const e of all) if (e.slug) urls.push(buildPage(e));
 // copy static assets
 if (existsSync(join(ROOT, 'assets'))) cpSync(join(ROOT, 'assets'), join(DIST, 'assets'), { recursive: true });
 
-// copy CMS admin (Decap) so /admin/ is served
+// copy CMS admin (custom backend UI) so /admin/ is served
 if (existsSync(join(ROOT, 'admin'))) cpSync(join(ROOT, 'admin'), join(DIST, 'admin'), { recursive: true });
+
+// copy Pages Functions so /api/* backend is served
+if (existsSync(join(ROOT, 'functions'))) cpSync(join(ROOT, 'functions'), join(DIST, 'functions'), { recursive: true });
 
 // sitemap
 const sm = `<?xml version="1.0" encoding="UTF-8"?>
