@@ -7,14 +7,22 @@
   "logo": "/assets/img/logo.png",
   "ogImage": "/assets/img/og-image.jpg",
   "nav": [
-    { "label": "Home", "slug": "index" },
-    { "label": "Products", "slug": "amp-peptide-product-list" },
-    { "label": "Manufacturing", "slug": "amp-peptide-manufacturing-capabilities" },
-    { "label": "Quality", "slug": "amp-peptide-quality-assurance" },
-    { "label": "About", "slug": "about-amp-peptide-china" },
+    { "label": "AMP Peptide Capabilities", "slug": "amp-peptide-manufacturing-capabilities" },
+    { "label": "AMP Peptide Quality Assurance", "slug": "amp-peptide-quality-assurance" },
+    { "label": "AMP Database", "href": "https://research.amppeptide.com/" },
+    { "label": "Product & Pricing", "slug": "amp-peptide-product-list" },
+    { "label": "Shipping Calculator", "slug": "shipping-calculator" },
     { "label": "Blog", "slug": "amp-peptide-blog" },
     { "label": "Contact", "slug": "contact" }
   ],
+  "hero": {
+    "eyebrow": "AMP PEPTIDE MANUFACTURER",
+    "title": "Custom Peptide Synthesis Manufacturer",
+    "subtitle": "Manufacturer Direct Supply  ·  Competitive Wholesale Pricing  ·  Global Shipping  ·  Single Box Orders Available",
+    "primary": { "label": "Get a Quote", "slug": "contact" },
+    "secondary": { "label": "View Catalog", "slug": "amp-peptide-product-list" }
+  },
+  "pageHeroBg": "/assets/img/uploads/hero.jpg",
   "contact": {
     "email": "sales@amppeptide.com",
     "phone": "+86 512 000 0000",

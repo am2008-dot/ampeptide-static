@@ -28,15 +28,17 @@ const outPath = slug => slug === 'index' ? join(DIST, 'index.html') : join(DIST,
 
 function renderHeader(active) {
   const links = SITE.nav.map(n => {
-    const href = n.slug === 'index' ? '/' : '/' + n.slug + '/';
-    const cls = n.slug === active ? ' class="active"' : '';
-    return `<a href="${href}"${cls}>${esc(n.label)}</a>`;
+    const href = n.href || (n.slug === 'index' ? '/' : '/' + n.slug + '/');
+    const external = !!n.href;
+    const cls = (!external && n.slug === active) ? ' class="active"' : '';
+    const ext = external ? ' target="_blank" rel="noopener"' : '';
+    return `<a href="${href}"${cls}${ext}>${esc(n.label)}</a>`;
   }).join('');
   return `<header class="site-header">
   <div class="container nav-wrap">
-    <a class="brand" href="/"><img src="${SITE.logo}" alt="${esc(SITE.name)} logo"><span>${esc(SITE.name)}<small>${esc(SITE.tagline)}</small></span></a>
-    <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
-    <nav class="nav">${links}<a class="btn btn-primary" href="/contact/">Get a Quote</a></nav>
+    <a class="brand" href="/"><img src="${SITE.logo}" alt="${esc(SITE.name)}"><span>${esc(SITE.name)}<small>${esc(SITE.tagline)}</small></span></a>
+    <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="nav" id="nav">${links}<a class="btn btn-primary" href="/contact/">Get a Quote</a></nav>
   </div>
 </header>`;
 }
@@ -44,19 +46,19 @@ function renderHeader(active) {
 function renderFooter() {
   const cols = SITE.footer.columns.map(c => {
     const links = c.links.map(l => {
-      const href = l.slug === 'index' ? '/' : '/' + l.slug + '/';
+      const href = l.href || (l.slug === 'index' ? '/' : '/' + l.slug + '/');
       return `<a href="${href}">${esc(l.label)}</a>`;
     }).join('');
     return `<div><h4>${esc(c.title)}</h4>${links}</div>`;
   }).join('');
   const c = SITE.contact;
   return `<footer class="site-footer">
-  <div class="container footer-grid">
-    <div class="footer-brand"><img src="${SITE.logo}" alt="${esc(SITE.name)}"><p>${esc(SITE.description)}</p>
-      <p>📧 ${esc(c.email)}<br>📍 ${esc(c.address)}</p></div>
+  <div class="footer-grid">
+    <div class="footer-brand"><img src="${SITE.logo}" alt="${esc(SITE.name)} logo"><p>${esc(SITE.description)}</p>
+      <p>Email: ${esc(c.email)}<br>Address: ${esc(c.address)}</p></div>
     ${cols}
   </div>
-  <div class="footer-bottom">© ${new Date().getFullYear()} ${esc(SITE.fullName)}. All rights reserved. Research peptides are for laboratory research use only.</div>
+  <div class="footer-bottom"><div class="container">© ${new Date().getFullYear()} ${esc(SITE.fullName)}. All rights reserved. · Research peptides are for laboratory research use only.</div></div>
 </footer>`;
 }
 
@@ -87,22 +89,28 @@ function jsonLd(entry) {
 }
 
 function buildPage(entry) {
-  const body = mdToHtml(entry.body || '');
+  const body = mdToHtml(entry.body || '')
+    // page title is already rendered by the hero / page-hero banner →
+    // demote any in-body H1 to H2 so each page keeps a single H1
+    .replace(/<h1([^>]*)>/g, '<h2$1>').replace(/<\/h1>/g, '</h2>');
+  const h = SITE.hero || {};
   const hero = entry.slug === 'index'
-    ? `<section class="hero"><div class="container">
-        <h1>${esc(SITE.fullName)}</h1>
-        <p>${esc(SITE.description)}</p>
-        <div class="actions">
-          <a class="btn btn-primary" href="/contact/">Get a Quote</a>
-          <a class="btn btn-ghost" href="/amp-peptide-product-list/">View Catalog</a>
+    ? `<section class="hero">
+        <img class="hero-bg" src="${esc(SITE.pageHeroBg)}" alt="">
+        <div class="container">
+          <span class="eyebrow">${esc(h.eyebrow || SITE.name)}</span>
+          <h1>${esc(h.title || SITE.fullName)}</h1>
+          <p class="lead">${esc(h.subtitle || SITE.description)}</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="/${esc((h.primary && h.primary.slug) || 'contact')}/">${esc((h.primary && h.primary.label) || 'Get a Quote')}</a>
+            <a class="btn btn-ghost" href="/${esc((h.secondary && h.secondary.slug) || 'amp-peptide-product-list')}/">${esc((h.secondary && h.secondary.label) || 'View Catalog')}</a>
+          </div>
         </div>
-        <div class="hero-badges">
-          <div><strong>GMP</strong>Suzhou facility</div>
-          <div><strong>200+</strong>Research peptides</div>
-          <div><strong>99%+</strong>Analytical purity</div>
-        </div>
-      </div></section>`
-    : '';
+      </section>`
+    : `<section class="page-hero"><div class="container">
+        <div class="eyebrow">${esc(SITE.name)}</div>
+        <h1>${esc(entry.title)}</h1>
+      </div></section>`;
   const meta = [
     `<meta name="description" content="${esc(entry.description || '')}">`,
     `<link rel="canonical" href="${esc(urlFor(entry.slug))}">`,
