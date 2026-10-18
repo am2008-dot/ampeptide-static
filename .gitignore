@@ -7,6 +7,31 @@
 # Local quarantine of raw WordPress dumps (not part of the site)
 _raw/
 
+# Local/private machine state — never commit
+.workbuddy/
+.wrangler/
+
+# Stray temp files from manual checks (curl dumps, scratch lists)
+_*.txt
+_*.html
+_*.xml
+_*.json
+_ps*.xml
+_si.xml
+about-amp-peptide-china.*.html
+amp-peptide-*.html
+contact.*.html
+disclaimer.*.html
+privacy-policy.*.html
+terms-and-conditions.*.html
+return-and-refund-policy.*.html
+shipping-policy.*.html
+peptide-calculator-dosage-tools-hub.*.html
+index.md
+logo.png
+favicon-32.png
+og-image.jpg
+
 # OS / editor noise
 .DS_Store
 Thumbs.db
